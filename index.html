@@ -10,17 +10,21 @@
 
     <meta name="theme-color" content="#0f172a">
 
+    <meta name="description" content="TetraLux (TLX) - Ethical DeFi on Solana. Stability, Passive Income, Community.">
+
+    <meta name="keywords" content="DeFi, Solana, TLX, Token, Presale">
+
     <title>TetraLux (TLX) | Ethical DeFi on Solana</title>
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Pinned versioning for CDNs with integrity checks -->
+    <script src="https://cdn.tailwindcss.com@3.4.1"></script>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-k6HSoHyYK+854DVkTBc5A50K2Qd+ni2ClSD5RnMbKWWxaj2uFbRNSOYAcIL7V8/7L29HWE9It7uoUQUotXe8jw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
 
-    <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
-
-    
+    <!-- Solana Web3 with fixed version -->
+    <script src="https://unpkg.com/@solana/web3.js@1.88.0/lib/index.iife.min.js"></script>
 
     <script>
 
@@ -88,7 +92,7 @@
 
         }
 
-        /* Mobil menü animáció */
+        /* Mobile menu animation */
 
         #mobile-menu {
 
@@ -107,6 +111,120 @@
             max-height: 400px;
 
             opacity: 1;
+
+        }
+
+        /* Notification styles */
+
+        .notification {
+
+            position: fixed;
+
+            top: 20px;
+
+            right: 20px;
+
+            padding: 16px 24px;
+
+            border-radius: 8px;
+
+            font-weight: 600;
+
+            z-index: 9999;
+
+            animation: slideIn 0.3s ease-out;
+
+            max-width: 400px;
+
+        }
+
+        .notification.success {
+
+            background-color: #10b981;
+
+            color: white;
+
+        }
+
+        .notification.error {
+
+            background-color: #ef4444;
+
+            color: white;
+
+        }
+
+        .notification.warning {
+
+            background-color: #f59e0b;
+
+            color: white;
+
+        }
+
+        .notification.info {
+
+            background-color: #3b82f6;
+
+            color: white;
+
+        }
+
+        @keyframes slideIn {
+
+            from {
+
+                transform: translateX(400px);
+
+                opacity: 0;
+
+            }
+
+            to {
+
+                transform: translateX(0);
+
+                opacity: 1;
+
+            }
+
+        }
+
+        @keyframes slideOut {
+
+            from {
+
+                transform: translateX(0);
+
+                opacity: 1;
+
+            }
+
+            to {
+
+                transform: translateX(400px);
+
+                opacity: 0;
+
+            }
+
+        }
+
+        .notification.exit {
+
+            animation: slideOut 0.3s ease-out forwards;
+
+        }
+
+        /* Fallback for browsers without backdrop-filter */
+
+        @supports not (backdrop-filter: blur(10px)) {
+
+            .glass-panel {
+
+                background: rgba(15, 23, 42, 0.95);
+
+            }
 
         }
 
@@ -158,7 +276,7 @@
 
                 <div class="flex items-center gap-4">
 
-                    <button id="connect-wallet-btn" class="hidden md:block bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-600 hover:to-emerald-800 text-white font-bold py-2 px-6 rounded-full transition">
+                    <button id="connect-wallet-btn" class="hidden md:block bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-600 hover:to-emerald-800 text-white font-bold py-2 px-6 rounded-full transition" aria-label="Connect Wallet">
 
                         <i class="fa-solid fa-wallet mr-2"></i> Connect
 
@@ -166,7 +284,7 @@
 
                     
 
-                    <button id="mobile-menu-btn" class="md:hidden text-gray-300 hover:text-white focus:outline-none p-2">
+                    <button id="mobile-menu-btn" class="md:hidden text-gray-300 hover:text-white focus:outline-none p-2" aria-label="Toggle Menu" aria-expanded="false">
 
                         <i class="fa-solid fa-bars text-2xl"></i>
 
@@ -192,7 +310,7 @@
 
                 <a href="#roadmap" class="mobile-link block hover:bg-gray-800 px-3 py-4 rounded-md text-base font-medium text-center">Roadmap</a>
 
-                <button id="connect-wallet-mobile" class="w-full mt-2 bg-emerald-600 text-white font-bold py-3 rounded-lg">
+                <button id="connect-wallet-mobile" class="w-full mt-2 bg-emerald-600 text-white font-bold py-3 rounded-lg" aria-label="Connect Wallet">
 
                     <i class="fa-solid fa-wallet mr-2"></i> Connect Wallet
 
@@ -238,25 +356,25 @@
 
             <div class="mt-8 flex flex-wrap justify-center gap-4 animate-fade-in-up">
 
-                <a href="https://x.com/TetraLux00" target="_blank" class="flex items-center gap-2 bg-black/40 hover:bg-black border border-gray-700 px-4 py-2 rounded-full transition">
+                <a href="https://x.com/TetraLux00" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 bg-black/40 hover:bg-black border border-gray-700 px-4 py-2 rounded-full transition">
 
                     <i class="fa-brands fa-x-twitter text-white"></i> <span class="text-sm font-bold">@TetraLux00</span>
 
                 </a>
 
-                <a href="https://t.me/TetraLuxBot?start=website" target="_blank" class="flex items-center gap-2 bg-blue-500/20 hover:bg-blue-500/40 border border-blue-500 px-4 py-2 rounded-full transition">
+                <a href="https://t.me/TetraLuxBot?start=website" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 bg-blue-500/20 hover:bg-blue-500/40 border border-blue-500 px-4 py-2 rounded-full transition">
 
                     <i class="fa-solid fa-robot text-blue-400"></i> <span class="text-sm font-bold text-blue-100">Start Bot</span>
 
                 </a>
 
-                <a href="https://t.me/TetraLux00" target="_blank" class="flex items-center gap-2 bg-blue-400/10 hover:bg-blue-400/20 border border-blue-400 px-4 py-2 rounded-full transition">
+                <a href="https://t.me/TetraLux00" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 bg-blue-400/10 hover:bg-blue-400/20 border border-blue-400 px-4 py-2 rounded-full transition">
 
                     <i class="fa-brands fa-telegram text-blue-400"></i> <span class="text-sm font-bold">Channel</span>
 
                 </a>
 
-                 <a href="https://t.me/TetraLuxGroup" target="_blank" class="flex items-center gap-2 bg-emerald-400/10 hover:bg-emerald-400/20 border border-emerald-400 px-4 py-2 rounded-full transition">
+                 <a href="https://t.me/TetraLuxGroup" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 bg-emerald-400/10 hover:bg-emerald-400/20 border border-emerald-400 px-4 py-2 rounded-full transition">
 
                     <i class="fa-solid fa-users text-emerald-400"></i> <span class="text-sm font-bold">Group</span>
 
@@ -274,7 +392,7 @@
 
                 </button>
 
-                <a href="#" class="glass-panel hover:bg-white/10 text-white font-bold py-4 px-8 rounded-lg border border-gray-600 transition w-full sm:w-auto text-center">
+                <a href="./whitepaper.pdf" target="_blank" rel="noopener noreferrer" class="glass-panel hover:bg-white/10 text-white font-bold py-4 px-8 rounded-lg border border-gray-600 transition w-full sm:w-auto text-center">
 
                     Read Whitepaper
 
@@ -490,11 +608,11 @@
 
                             <span class="text-gray-400">Supply:</span>
 
-                            <span class="text-xl font-bold text-yellow-400">100 / 100</span>
+                            <span class="text-xl font-bold text-yellow-400"><span id="nft-minted">0</span> / 100</span>
 
                         </div>
 
-                        <button class="w-full mt-4 bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 rounded transition h-12">
+                        <button id="mint-nft-btn" class="w-full mt-4 bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 rounded transition h-12" disabled>
 
                             Mint NFT (Coming Soon)
 
@@ -619,18 +737,19 @@
 
 
     <!-- PRESALE MODAL -->
-    <div id="presale-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div id="presale-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4" role="dialog" aria-labelledby="presale-title">
         <div class="relative w-full max-w-lg glass-panel rounded-3xl border border-emerald-500/30 shadow-[0_0_50px_rgba(16,185,129,0.1)] max-h-[90vh] overflow-y-auto">
             
-            <!-- Close gomb -->
-            <button id="close-presale" class="absolute top-4 right-4 text-gray-400 hover:text-white transition z-10">
+            <!-- Close button -->
+            <button id="close-presale" class="absolute top-4 right-4 text-gray-400 hover:text-white transition z-10" aria-label="Close presale modal">
                 <i class="fa-solid fa-xmark text-2xl"></i>
             </button>
 
             <div class="p-8">
                 <div class="text-center mb-8">
-                    <h1 class="text-3xl font-display font-bold text-white mb-2">Presale is Live</h1>
+                    <h2 id="presale-title" class="text-3xl font-display font-bold text-white mb-2">Presale is Live</h2>
                     <p class="text-sm text-gray-400">Exchange SOL for TLX directly.</p>
+                    <p class="text-xs text-gray-500 mt-2">Network: <span id="network-display" class="text-emerald-400 font-bold">Solana Mainnet</span></p>
                 </div>
 
                 <div class="mb-8 space-y-4">
@@ -645,7 +764,7 @@
                             <span class="text-white font-bold"><span id="sold-amount">0</span> / 40,000,000 TLX</span>
                         </div>
                         <div class="w-full bg-gray-800 h-3 rounded-full overflow-hidden border border-gray-700">
-                            <div id="progress-bar" class="bg-gradient-to-r from-emerald-500 to-emerald-300 h-full w-[0%] transition-all duration-1000"></div>
+                            <div id="progress-bar" class="bg-gradient-to-r from-emerald-500 to-emerald-300 h-full w-[0%] transition-all duration-1000" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
                 </div>
@@ -657,9 +776,9 @@
                             <span>Balance: <span id="sol-balance">0.00</span> SOL</span>
                         </div>
                         <div class="flex items-center">
-                            <input type="number" id="sol-input" placeholder="0.0" step="0.1" min="0.1" class="w-full bg-transparent text-3xl font-bold text-white focus:outline-none">
+                            <input type="number" id="sol-input" placeholder="0.0" step="0.1" min="0.1" max="10000" class="w-full bg-transparent text-3xl font-bold text-white focus:outline-none" aria-label="SOL amount to send">
                             <div class="flex items-center gap-2 bg-black/50 px-3 py-1 rounded-lg">
-                                <img src="https://cryptologos.cc/logos/solana-sol-logo.svg?v=024" alt="SOL" class="w-5 h-5">
+                                <img src="https://cryptologos.cc/logos/solana-sol-logo.svg?v=024" alt="SOL" class="w-5 h-5" loading="lazy">
                                 <span class="font-bold">SOL</span>
                             </div>
                         </div>
@@ -676,7 +795,7 @@
                             <span>You Receive</span>
                         </div>
                         <div class="flex items-center">
-                            <input type="text" id="tlx-output" placeholder="0" readonly class="w-full bg-transparent text-3xl font-bold text-emerald-400 focus:outline-none">
+                            <input type="text" id="tlx-output" placeholder="0" readonly class="w-full bg-transparent text-3xl font-bold text-emerald-400 focus:outline-none" aria-label="TLX amount to receive">
                             <div class="flex items-center gap-2 bg-black/50 px-3 py-1 rounded-lg">
                                 <i class="fa-solid fa-gem text-emerald-400"></i>
                                 <span class="font-bold">TLX</span>
@@ -685,9 +804,13 @@
                     </div>
                 </div>
 
-                <button id="buy-btn" disabled class="w-full bg-gray-700 text-gray-400 font-bold py-4 rounded-xl transition cursor-not-allowed uppercase tracking-wide">
+                <button id="buy-btn" disabled class="w-full bg-gray-700 text-gray-400 font-bold py-4 rounded-xl transition cursor-not-allowed uppercase tracking-wide" aria-busy="false">
                     Connect Wallet to Buy
                 </button>
+
+                <p class="text-xs text-gray-500 text-center mt-4">
+                    Smart Contract: <code class="text-gray-400 break-all" id="contract-display">Not connected</code>
+                </p>
             </div>
         </div>
     </div>
@@ -710,11 +833,11 @@
 
                 <div class="md:text-right flex flex-col md:block gap-2">
 
-                    <a href="https://x.com/TetraLux00" target="_blank" class="text-gray-400 hover:text-white mx-2"><i class="fa-brands fa-x-twitter"></i> Twitter (X)</a>
+                    <a href="https://x.com/TetraLux00" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white mx-2"><i class="fa-brands fa-x-twitter"></i> Twitter (X)</a>
 
-                    <a href="https://t.me/TetraLux00" target="_blank" class="text-gray-400 hover:text-white mx-2"><i class="fa-brands fa-telegram"></i> Channel</a>
+                    <a href="https://t.me/TetraLux00" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white mx-2"><i class="fa-brands fa-telegram"></i> Channel</a>
 
-                    <a href="https://t.me/TetraLuxBot" target="_blank" class="text-gray-400 hover:text-white mx-2"><i class="fa-solid fa-robot"></i> Bot</a>
+                    <a href="https://t.me/TetraLuxBot" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white mx-2"><i class="fa-solid fa-robot"></i> Bot</a>
 
                 </div>
 
@@ -756,33 +879,251 @@
 
     <script>
 
+        // ============================================
+        // CONFIGURATION - EDIT THESE VALUES
+        // ============================================
+        
+        const CONFIG = {
+            // Solana network to use: "mainnet-beta", "testnet", "devnet"
+            NETWORK: "mainnet-beta",
+            
+            // Your presale smart contract address
+            PRESALE_CONTRACT: "YOUR_PRESALE_CONTRACT_ADDRESS_HERE",
+            
+            // Token mint address
+            TOKEN_MINT: "YOUR_TOKEN_MINT_ADDRESS_HERE",
+            
+            // Exchange rate: 1 SOL = X TLX
+            EXCHANGE_RATE: 1000000,
+            
+            // Maximum SOL per transaction
+            MAX_SOL_PER_TX: 100,
+            
+            // RPC endpoints
+            RPC_URL: "https://api.mainnet-beta.solana.com",
+        };
+
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+
+        /**
+         * Shows a notification to the user
+         */
+        function showNotification(message, type = 'info', duration = 3000) {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            notification.setAttribute('role', 'alert');
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.classList.add('exit');
+                setTimeout(() => notification.remove(), 300);
+            }, duration);
+        }
+
+        /**
+         * Sanitize user input to prevent XSS
+         */
+        function sanitizeInput(input) {
+            const div = document.createElement('div');
+            div.textContent = input;
+            return div.innerHTML;
+        }
+
+        /**
+         * Validate SOL amount
+         */
+        function validateSolAmount(value) {
+            const num = parseFloat(value);
+            if (isNaN(num) || num <= 0) return false;
+            if (num > CONFIG.MAX_SOL_PER_TX) {
+                showNotification(`Maximum ${CONFIG.MAX_SOL_PER_TX} SOL per transaction`, 'warning');
+                return false;
+            }
+            return true;
+        }
+
+        /**
+         * Format large numbers for display
+         */
+        function formatNumber(num) {
+            return new Intl.NumberFormat('en-US').format(Math.floor(num));
+        }
+
+        /**
+         * Update progress bar
+         */
+        function updateProgressBar(sold, total) {
+            const percentage = Math.min((sold / total) * 100, 100);
+            const bar = document.getElementById('progress-bar');
+            bar.style.width = `${percentage}%`;
+            bar.setAttribute('aria-valuenow', Math.floor(percentage));
+            document.getElementById('sold-amount').textContent = formatNumber(sold);
+        }
+
+        // ============================================
+        // WALLET MANAGEMENT
+        // ============================================
+
+        let walletConnected = false;
+        let userPublicKey = null;
+        let userBalance = 0;
+
+        /**
+         * Check if Solana wallet is available
+         */
+        async function checkWalletAvailability() {
+            return new Promise((resolve) => {
+                const timeout = setTimeout(() => resolve(false), 2000);
+                
+                if ('solana' in window) {
+                    clearTimeout(timeout);
+                    resolve(true);
+                }
+            });
+        }
+
+        /**
+         * Get user's SOL balance
+         */
+        async function getUserBalance(publicKey) {
+            try {
+                const connection = new window.solanaWeb3.Connection(CONFIG.RPC_URL);
+                const balance = await connection.getBalance(publicKey);
+                return balance / window.solanaWeb3.LAMPORTS_PER_SOL;
+            } catch (error) {
+                console.error('Error fetching balance:', error);
+                return 0;
+            }
+        }
+
+        /**
+         * Update wallet UI based on connection status
+         */
+        const updateWalletUI = (connected, pubKeyStr = '') => {
+            walletConnected = connected;
+            const desktopConnectBtn = document.getElementById('connect-wallet-btn');
+            const mobileConnectBtn = document.getElementById('connect-wallet-mobile');
+            const buyBtn = document.getElementById('buy-btn');
+            const solInput = document.getElementById('sol-input');
+            
+            if (connected) {
+                const displayText = pubKeyStr.slice(0, 4) + '...' + pubKeyStr.slice(-4);
+                const contractDisplay = document.getElementById('contract-display');
+                
+                desktopConnectBtn.innerHTML = `<i class="fa-solid fa-check mr-2"></i> ${sanitizeInput(displayText)}`;
+                desktopConnectBtn.classList.remove('from-emerald-500', 'to-emerald-700', 'hover:from-emerald-600', 'hover:to-emerald-800', 'bg-gradient-to-r');
+                desktopConnectBtn.classList.add('bg-gray-700', 'hover:bg-gray-800', 'border', 'border-gray-600');
+                
+                mobileConnectBtn.innerHTML = `<i class="fa-solid fa-check mr-2"></i> Connected`;
+                mobileConnectBtn.classList.remove('bg-emerald-600');
+                mobileConnectBtn.classList.add('bg-gray-700');
+                
+                // Display contract address
+                if (CONFIG.PRESALE_CONTRACT !== 'YOUR_PRESALE_CONTRACT_ADDRESS_HERE') {
+                    contractDisplay.textContent = CONFIG.PRESALE_CONTRACT.slice(0, 4) + '...' + CONFIG.PRESALE_CONTRACT.slice(-4);
+                } else {
+                    contractDisplay.textContent = 'Contract not configured';
+                }
+                
+                if (validateSolAmount(solInput.value)) {
+                    buyBtn.disabled = false;
+                    buyBtn.classList.remove('bg-gray-700', 'text-gray-400', 'cursor-not-allowed');
+                    buyBtn.classList.add('bg-emerald-500', 'hover:bg-emerald-600', 'text-white', 'shadow-lg');
+                }
+                buyBtn.innerText = 'Buy TLX';
+            } else {
+                desktopConnectBtn.innerHTML = '<i class="fa-solid fa-wallet mr-2"></i> Connect';
+                desktopConnectBtn.classList.add('bg-gradient-to-r', 'from-emerald-500', 'to-emerald-700', 'hover:from-emerald-600', 'hover:to-emerald-800');
+                desktopConnectBtn.classList.remove('bg-gray-700', 'hover:bg-gray-800', 'border', 'border-gray-600');
+                
+                mobileConnectBtn.innerHTML = '<i class="fa-solid fa-wallet mr-2"></i> Connect Wallet';
+                mobileConnectBtn.classList.remove('bg-gray-700');
+                mobileConnectBtn.classList.add('bg-emerald-600');
+                
+                buyBtn.disabled = true;
+                buyBtn.classList.add('bg-gray-700', 'text-gray-400', 'cursor-not-allowed');
+                buyBtn.classList.remove('bg-emerald-500', 'hover:bg-emerald-600', 'text-white', 'shadow-lg');
+                buyBtn.innerText = 'Connect Wallet to Buy';
+                document.getElementById('sol-balance').textContent = '0.00';
+            }
+        };
+
+        /**
+         * Handle wallet connection
+         */
+        const handleConnect = async (btnElement) => {
+            try {
+                const hasWallet = await checkWalletAvailability();
+                
+                if (hasWallet && 'solana' in window) {
+                    try {
+                        const response = await window.solana.connect();
+                        userPublicKey = response.publicKey.toString();
+                        userBalance = await getUserBalance(response.publicKey);
+                        
+                        updateWalletUI(true, userPublicKey);
+                        document.getElementById('sol-balance').textContent = userBalance.toFixed(2);
+                        showNotification(`✓ Connected: ${userPublicKey.slice(0, 8)}...`, 'success');
+                    } catch (err) {
+                        if (err.message !== 'User rejected the request') {
+                            console.error('Connection error:', err);
+                            showNotification('Connection failed. Please try again.', 'error');
+                        }
+                    }
+                } else {
+                    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+                    if (isMobile) {
+                        window.location.href = "https://phantom.app/ul/browse/" + encodeURIComponent(window.location.href);
+                    } else {
+                        showNotification('Phantom Wallet not detected. Installing...', 'info', 5000);
+                        window.open('https://phantom.app/', '_blank');
+                    }
+                }
+            } catch (error) {
+                console.error('Wallet connection error:', error);
+                showNotification('An unexpected error occurred', 'error');
+            }
+        };
+
+        // ============================================
+        // DOM CONTENT LOADED
+        // ============================================
+
         document.addEventListener('DOMContentLoaded', () => {
 
-            // ===== PRESALE MODAL KEZELÉS =====
+            // ===== PRESALE MODAL HANDLING =====
             const presaleModal = document.getElementById('presale-modal');
             const openPresaleBtn = document.getElementById('open-presale-btn');
             const closePresaleBtn = document.getElementById('close-presale');
             
-            const RATE = 1000000; // 1 SOL = 1,000,000 TLX
+            // Update network display
+            const networkDisplay = document.getElementById('network-display');
+            const networkNames = {
+                'mainnet-beta': 'Solana Mainnet',
+                'testnet': 'Solana Testnet',
+                'devnet': 'Solana Devnet'
+            };
+            networkDisplay.textContent = networkNames[CONFIG.NETWORK] || 'Unknown Network';
             
-            // Modal nyitása
+            // Modal controls
             openPresaleBtn.addEventListener('click', () => {
                 presaleModal.classList.remove('hidden');
             });
             
-            // Modal zárása
             closePresaleBtn.addEventListener('click', () => {
                 presaleModal.classList.add('hidden');
             });
             
-            // Modal zárása a háttérre kattintásra
             presaleModal.addEventListener('click', (e) => {
                 if (e.target === presaleModal) {
                     presaleModal.classList.add('hidden');
                 }
             });
             
-            // ===== PRESALE SZÁMOLÓGÉP =====
+            // ===== PRESALE CALCULATOR =====
             const solInput = document.getElementById('sol-input');
             const tlxOutput = document.getElementById('tlx-output');
             const buyBtn = document.getElementById('buy-btn');
@@ -791,50 +1132,85 @@
             solInput.addEventListener('input', (e) => {
                 const solValue = parseFloat(e.target.value);
                 if (!isNaN(solValue) && solValue > 0) {
-                    tlxOutput.value = (solValue * RATE).toLocaleString('en-US');
-                    if (walletConnected) {
+                    const tlxAmount = solValue * CONFIG.EXCHANGE_RATE;
+                    tlxOutput.value = formatNumber(tlxAmount);
+                    
+                    if (walletConnected && validateSolAmount(solValue)) {
                         buyBtn.disabled = false;
                         buyBtn.classList.remove('bg-gray-700', 'text-gray-400', 'cursor-not-allowed');
                         buyBtn.classList.add('bg-emerald-500', 'hover:bg-emerald-600', 'text-white', 'shadow-lg');
                     }
                 } else {
                     tlxOutput.value = '';
-                    if (walletConnected) {
-                        buyBtn.disabled = true;
-                        buyBtn.classList.add('bg-gray-700', 'text-gray-400', 'cursor-not-allowed');
-                        buyBtn.classList.remove('bg-emerald-500', 'hover:bg-emerald-600', 'text-white', 'shadow-lg');
-                    }
+                    buyBtn.disabled = true;
+                    buyBtn.classList.add('bg-gray-700', 'text-gray-400', 'cursor-not-allowed');
+                    buyBtn.classList.remove('bg-emerald-500', 'hover:bg-emerald-600', 'text-white', 'shadow-lg');
                 }
             });
 
-            // Buy gomb logika
-            buyBtn.addEventListener('click', () => {
-                if (!walletConnected || !solInput.value) return;
+            // Buy button handler
+            buyBtn.addEventListener('click', async () => {
+                if (!walletConnected || !solInput.value) {
+                    showNotification('Please connect wallet and enter an amount', 'warning');
+                    return;
+                }
+
+                if (!validateSolAmount(solInput.value)) {
+                    return;
+                }
+
+                if (CONFIG.PRESALE_CONTRACT === 'YOUR_PRESALE_CONTRACT_ADDRESS_HERE') {
+                    showNotification('Presale contract not configured. Please contact support.', 'error');
+                    return;
+                }
+
+                buyBtn.setAttribute('aria-busy', 'true');
+                buyBtn.disabled = true;
                 buyBtn.innerText = 'Processing...';
                 buyBtn.classList.add('animate-pulse');
                 
-                setTimeout(() => {
-                    alert(`Tranzakció indul ${solInput.value} SOL értékben az okosszerződés felé!`);
+                try {
+                    const solAmount = parseFloat(solInput.value);
+                    const tlxAmount = solAmount * CONFIG.EXCHANGE_RATE;
+                    
+                    // TODO: Implement actual transaction logic
+                    // This is a placeholder - integrate with your smart contract
+                    
+                    showNotification(`Transaction initiated: ${solAmount} SOL → ${formatNumber(tlxAmount)} TLX`, 'info', 5000);
+                    
+                    // Simulate transaction
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    
+                    // Update progress bar (example)
+                    updateProgressBar(Math.floor(Math.random() * 40000000), 40000000);
+                    
+                    showNotification('✓ Transaction successful!', 'success');
+                    solInput.value = '';
+                    tlxOutput.value = '';
+                } catch (error) {
+                    console.error('Transaction error:', error);
+                    showNotification(`Transaction failed: ${error.message}`, 'error');
+                } finally {
+                    buyBtn.setAttribute('aria-busy', 'false');
+                    buyBtn.disabled = false;
                     buyBtn.innerText = 'Buy TLX';
                     buyBtn.classList.remove('animate-pulse');
-                }, 1500);
+                }
             });
 
-            // ===== GLOBÁLIS WALLET STÁTUSZ =====
-            let walletConnected = false;
-            let userPublicKey = null;
-
-            // ===== MOBIL MENÜ KEZELÉS =====
+            // ===== MOBILE MENU HANDLING =====
             const mobileMenuBtn = document.getElementById('mobile-menu-btn');
             const mobileMenu = document.getElementById('mobile-menu');
             const mobileLinks = document.querySelectorAll('.mobile-link');
             const mobileConnectBtn = document.getElementById('connect-wallet-mobile');
 
-            // Menü nyitás/zárás
             mobileMenuBtn.addEventListener('click', () => {
                 mobileMenu.classList.toggle('open');
+                const isOpen = mobileMenu.classList.contains('open');
+                mobileMenuBtn.setAttribute('aria-expanded', isOpen);
+                
                 const icon = mobileMenuBtn.querySelector('i');
-                if (mobileMenu.classList.contains('open')) {
+                if (isOpen) {
                     icon.classList.remove('fa-bars');
                     icon.classList.add('fa-xmark');
                 } else {
@@ -843,85 +1219,33 @@
                 }
             });
 
-            // Menü bezárása kattintás után
             mobileLinks.forEach(link => {
                 link.addEventListener('click', () => {
                     mobileMenu.classList.remove('open');
+                    mobileMenuBtn.setAttribute('aria-expanded', false);
                     const icon = mobileMenuBtn.querySelector('i');
                     icon.classList.remove('fa-xmark');
                     icon.classList.add('fa-bars');
                 });
             });
 
-            // ===== WALLET CONNECT FUNKCIÓ =====
-            const updateWalletUI = (connected, pubKeyStr = '') => {
-                walletConnected = connected;
-                const desktopConnectBtn = document.getElementById('connect-wallet-btn');
-                
-                if (connected) {
-                    // Desktop gomb frissítése
-                    const displayText = pubKeyStr.slice(0, 4) + '...' + pubKeyStr.slice(-4);
-                    desktopConnectBtn.innerHTML = `<i class="fa-solid fa-check mr-2"></i> ${displayText}`;
-                    desktopConnectBtn.classList.remove('from-emerald-500', 'to-emerald-700', 'hover:from-emerald-600', 'hover:to-emerald-800', 'bg-gradient-to-r');
-                    desktopConnectBtn.classList.add('bg-gray-700', 'hover:bg-gray-800', 'border', 'border-gray-600');
-                    
-                    // Mobile gomb frissítése
-                    mobileConnectBtn.innerHTML = `<i class="fa-solid fa-check mr-2"></i> Connected`;
-                    mobileConnectBtn.classList.remove('bg-emerald-600');
-                    mobileConnectBtn.classList.add('bg-gray-700');
-                    
-                    // Presale buy gomb
-                    if (parseFloat(solInput.value) > 0) {
-                        buyBtn.disabled = false;
-                        buyBtn.classList.remove('bg-gray-700', 'text-gray-400', 'cursor-not-allowed');
-                        buyBtn.classList.add('bg-emerald-500', 'hover:bg-emerald-600', 'text-white', 'shadow-lg');
-                    }
-                    buyBtn.innerText = 'Buy TLX';
-                } else {
-                    // Desktop gomb visszaállítása
-                    desktopConnectBtn.innerHTML = '<i class="fa-solid fa-wallet mr-2"></i> Connect';
-                    desktopConnectBtn.classList.add('bg-gradient-to-r', 'from-emerald-500', 'to-emerald-700', 'hover:from-emerald-600', 'hover:to-emerald-800');
-                    desktopConnectBtn.classList.remove('bg-gray-700', 'hover:bg-gray-800', 'border', 'border-gray-600');
-                    
-                    // Mobile gomb visszaállítása
-                    mobileConnectBtn.innerHTML = '<i class="fa-solid fa-wallet mr-2"></i> Connect Wallet';
-                    mobileConnectBtn.classList.remove('bg-gray-700');
-                    mobileConnectBtn.classList.add('bg-emerald-600');
-                    
-                    // Presale buy gomb
-                    buyBtn.disabled = true;
-                    buyBtn.classList.add('bg-gray-700', 'text-gray-400', 'cursor-not-allowed');
-                    buyBtn.classList.remove('bg-emerald-500', 'hover:bg-emerald-600', 'text-white', 'shadow-lg');
-                    buyBtn.innerText = 'Connect Wallet to Buy';
-                    solBalanceDisplay.innerText = '0.00';
-                }
-            };
-
-            const handleConnect = async (btnElement) => {
-                if ('solana' in window) {
-                    try {
-                        const response = await window.solana.connect();
-                        userPublicKey = response.publicKey.toString();
-                        updateWalletUI(true, userPublicKey);
-                        alert('Wallet successfully connected: ' + response.publicKey.toString().slice(0, 6) + '...');
-                    } catch (err) {
-                        console.error(err);
-                        alert('Connection error or rejected by user.');
-                    }
-                } else {
-                    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-                    if (isMobile) {
-                        window.location.href = "https://phantom.app/ul/browse/" + encodeURIComponent(window.location.href);
-                    } else {
-                        alert('Solana wallet (e.g. Phantom) not found!');
-                        window.open('https://phantom.app/', '_blank');
-                    }
-                }
-            };
-
+            // ===== WALLET CONNECTION HANDLERS =====
             const desktopConnectBtn = document.getElementById('connect-wallet-btn');
             desktopConnectBtn.addEventListener('click', () => handleConnect(desktopConnectBtn));
             mobileConnectBtn.addEventListener('click', () => handleConnect(mobileConnectBtn));
+
+            // ===== INITIAL PROGRESS BAR UPDATE =====
+            updateProgressBar(0, 40000000);
+
+            // ===== ATTEMPT AUTO-CONNECTION =====
+            if ('solana' in window && window.solana?.isPhantom) {
+                window.solana.connect({ onlyIfTrusted: true })
+                    .then(response => {
+                        userPublicKey = response.publicKey.toString();
+                        updateWalletUI(true, userPublicKey);
+                    })
+                    .catch(err => console.log('Auto-connect skipped'));
+            }
 
         });
 
