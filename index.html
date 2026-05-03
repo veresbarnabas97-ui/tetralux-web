@@ -1,208 +1,246 @@
 <!DOCTYPE html>
 <html lang="hu" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TetraLux (TLX) | Presale Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TetraLux (TLX) | Presale Dashboard</title>
 
-  <script src="https://cdn.tailwindcss.com/3.4.1"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
-  
-  <script src="https://unpkg.com/@solana/web3.js@1.88.0/lib/index.iife.min.js"></script>
-  <script src="https://unpkg.com/@coral-xyz/anchor@0.28.0/dist/anchor.umd.js"></script>
+    <!-- Tailwind & Fonts -->
+    <script src="https://cdn.tailwindcss.com/3.4.1"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- Solana Libraries -->
+    <script src="https://unpkg.com/@solana/web3.js@1.88.0/lib/index.iife.min.js"></script>
+    <script src="https://unpkg.com/@coral-xyz/anchor@0.28.0/dist/anchor.umd.js"></script>
+    <script src="https://unpkg.com/@solana/spl-token@0.3.8/lib/index.iife.min.js"></script>
+    
+    <!-- Buffer Polyfill (Kritikus a böngészőhöz!) -->
+    <script src="https://bundle.run/buffer@6.0.3"></script>
+    <script>window.Buffer = window.Buffer || buffer.Buffer;</script>
 
-  <script>
-    tailwind.config = { 
-      theme: { 
-        extend: { 
-          colors: { 
-            solana: '#9945FF', 
-            emerald: { 400: '#34d399', 500: '#10b981', 600: '#059669', 700: '#047857' } 
-          },
-          fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Rajdhani', 'sans-serif'] }
-        } 
-      } 
-    }
-  </script>
+    <script>
+        tailwind.config = { 
+            theme: { 
+                extend: { 
+                    colors: { 
+                        solana: '#9945FF', 
+                        emerald: { 400: '#34d399', 500: '#10b981', 600: '#059669', 700: '#047857' } 
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Rajdhani', 'sans-serif'] }
+                } 
+            } 
+        }
+    </script>
 
-  <style>
-    body { background-color: #0f172a; color: #e2e8f0; font-family: 'Inter', sans-serif; }
-    .glass-panel { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
-    .notification { position: fixed; top: 20px; right: 20px; padding: 16px 24px; border-radius: 12px; z-index: 9999; animation: slideIn 0.3s ease-out; }
-    @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-    .success { background: #10b981; color: white; }
-    .error { background: #ef4444; color: white; }
-  </style>
+    <style>
+        body { background-color: #0f172a; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        .glass-panel { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .notification { position: fixed; top: 20px; right: 20px; padding: 16px 24px; border-radius: 12px; z-index: 9999; animation: slideIn 0.3s ease-out; transition: opacity 0.5s; }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .success { background: #10b981; color: white; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); }
+        .error { background: #ef4444; color: white; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4); }
+    </style>
 </head>
 <body class="min-h-screen">
 
-  <nav class="fixed w-full z-50 glass-panel border-b border-white/5">
-    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-      <div class="text-3xl font-display font-bold tracking-wider text-emerald-400">TETRA<span class="text-white">LUX</span></div>
-      <button id="connect-wallet-btn" class="bg-gradient-to-r from-emerald-500 to-emerald-700 hover:scale-105 transition-transform text-white font-bold py-2.5 px-8 rounded-full shadow-lg shadow-emerald-500/20">
-        <i class="fa-solid fa-wallet mr-2"></i> Connect Wallet
-      </button>
-    </div>
-  </nav>
-
-  <main class="pt-40 pb-20 px-6">
-    <div class="max-w-4xl mx-auto text-center">
-      <h1 class="text-5xl md:text-7xl font-display font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-500">
-        TLX Presale Dashboard
-      </h1>
-      
-      <div class="glass-panel rounded-3xl p-8 md:p-12 mt-12 max-w-xl mx-auto">
-        <div class="flex justify-between items-center mb-8">
-          <span class="bg-emerald-500/10 text-emerald-400 px-4 py-1 rounded-full text-sm font-bold border border-emerald-500/20">Live on Devnet</span>
-          <span class="text-gray-400 text-sm">1 SOL = 1,000,000 TLX</span>
+    <nav class="fixed w-full z-50 glass-panel border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="text-3xl font-display font-bold tracking-wider text-emerald-400">TETRA<span class="text-white">LUX</span></div>
+            <button id="connect-wallet-btn" class="bg-gradient-to-r from-emerald-500 to-emerald-700 hover:scale-105 transition-transform text-white font-bold py-2.5 px-8 rounded-full shadow-lg shadow-emerald-500/20">
+                <i class="fa-solid fa-wallet mr-2"></i> Connect Wallet
+            </button>
         </div>
+    </nav>
 
-        <div class="space-y-6">
-          <div class="text-left">
-            <label class="block text-xs font-bold text-gray-500 uppercase ml-2 mb-2">You Pay</label>
-            <div class="bg-black/40 rounded-2xl p-4 border border-white/5 flex items-center">
-              <input type="number" id="sol-input" placeholder="0.00" step="0.1" class="bg-transparent text-3xl font-bold text-white outline-none w-full">
-              <span class="text-xl font-bold text-gray-400 ml-2">SOL</span>
+    <main class="pt-40 pb-20 px-6">
+        <div class="max-w-4xl mx-auto text-center">
+            <h1 class="text-5xl md:text-7xl font-display font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-500">
+                TLX Presale Dashboard
+            </h1>
+            
+            <div class="glass-panel rounded-3xl p-8 md:p-12 mt-12 max-w-xl mx-auto shadow-2xl">
+                <div class="flex justify-between items-center mb-8">
+                    <span class="bg-emerald-500/10 text-emerald-400 px-4 py-1 rounded-full text-sm font-bold border border-emerald-500/20">Live on Devnet</span>
+                    <span class="text-gray-400 text-sm font-semibold">1 SOL = 1,000,000 TLX</span>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="text-left">
+                        <label class="block text-xs font-bold text-gray-500 uppercase ml-2 mb-2 tracking-widest">You Pay</label>
+                        <div class="bg-black/40 rounded-2xl p-4 border border-white/5 flex items-center transition-all focus-within:border-emerald-500/50">
+                            <input type="number" id="sol-input" placeholder="0.00" step="0.1" min="0" class="bg-transparent text-3xl font-bold text-white outline-none w-full">
+                            <span class="text-xl font-bold text-gray-400 ml-2">SOL</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2 ml-2 flex justify-between">
+                            <span>Balance: <span id="sol-balance" class="text-gray-300">0.00</span> SOL</span>
+                        </p>
+                    </div>
+
+                    <div class="text-left">
+                        <label class="block text-xs font-bold text-gray-500 uppercase ml-2 mb-2 tracking-widest">You Receive</label>
+                        <div class="bg-black/40 rounded-2xl p-4 border border-white/5 flex items-center">
+                            <input type="text" id="tlx-output" placeholder="0" readonly class="bg-transparent text-3xl font-bold text-emerald-400 outline-none w-full">
+                            <span class="text-xl font-bold text-gray-400 ml-2">TLX</span>
+                        </div>
+                    </div>
+
+                    <button id="buy-btn" disabled class="w-full py-5 rounded-2xl font-display font-bold text-xl uppercase tracking-widest transition-all bg-gray-700 text-gray-500 cursor-not-allowed">
+                        Connect Wallet First
+                    </button>
+                </div>
             </div>
-            <p class="text-xs text-gray-500 mt-2 ml-2 text-right">Balance: <span id="sol-balance">0.00</span> SOL</p>
-          </div>
-
-          <div class="text-left">
-            <label class="block text-xs font-bold text-gray-500 uppercase ml-2 mb-2">You Receive</label>
-            <div class="bg-black/40 rounded-2xl p-4 border border-white/5 flex items-center">
-              <input type="text" id="tlx-output" placeholder="0" readonly class="bg-transparent text-3xl font-bold text-emerald-400 outline-none w-full">
-              <span class="text-xl font-bold text-gray-400 ml-2">TLX</span>
-            </div>
-          </div>
-
-          <button id="buy-btn" disabled class="w-full py-5 rounded-2xl font-display font-bold text-xl uppercase tracking-widest transition-all bg-gray-700 text-gray-500 cursor-not-allowed">
-            Connect Wallet First
-          </button>
+            
+            <p class="mt-8 text-gray-500 text-sm">
+                <i class="fa-solid fa-shield-halved mr-2"></i> TLX Mint: <span class="font-mono">BPk4...kaib</span>
+            </p>
         </div>
-      </div>
-    </div>
-  </main>
+    </main>
 
-  <script>
-    // --- Konfiguráció ---
-    const CONFIG = {
-      NETWORK: "devnet",
-      RPC_URL: "https://api.devnet.solana.com",
-      PROGRAM_ID: "6Gm6AuPo9mvbGQHDo63HpQyVsAcW9FcfwP5NnYZHz7xn",
-      ADMIN_WALLET: "4QawGSchxRP6t16Fkrnb9GPXwyhydGyV7WvesA4f8zRz",
-      TLX_MINT: "BPk4cKiNm3DovoHGbfTbsGabAVxsbyHHe3tLFq8rkaib",
-      RATE: 1000000
-    };
+    <script>
+        // --- Konfiguráció ---
+        const CONFIG = {
+            NETWORK: "devnet",
+            RPC_URL: "https://api.devnet.solana.com",
+            PROGRAM_ID: "6Gm6AuPo9mvbGQHDo63HpQyVsAcW9FcfwP5NnYZHz7xn",
+            ADMIN_WALLET: "4QawGSchxRP6t16Fkrnb9GPXwyhydGyV7WvesA4f8zRz",
+            TLX_MINT: "BPk4cKiNm3DovoHGbfTbsGabAVxsbyHHe3tLFq8rkaib",
+            RATE: 1000000
+        };
 
-    // --- IDL (A te lib.rs kódod alapján) ---
-    const IDL = {
-      version: "0.1.0",
-      name: "tlx_presale",
-      instructions: [{
-        name: "buyTokens",
-        accounts: [
-          { name: "buyer", isSigner: true, isWritable: true },
-          { name: "admin", isSigner: false, isWritable: true },
-          { name: "systemProgram", isSigner: false, isWritable: false }
-        ],
-        args: [{ name: "solAmount", type: "u64" }]
-      }]
-    };
+        // Anchor IDL (CamelCase-re konvertálva a metódus)
+        const IDL = {
+            version: "0.1.0",
+            name: "tlx_presale",
+            instructions: [{
+                name: "buyTokens",
+                accounts: [
+                    { name: "buyer", isSigner: true, isWritable: true },
+                    { name: "admin", isSigner: true, isWritable: true }, // Signer, ha ő a vault gazdája
+                    { name: "vaultTokenAccount", isSigner: false, isWritable: true },
+                    { name: "buyerTokenAccount", isSigner: false, isWritable: true },
+                    { name: "tokenProgram", isSigner: false, isWritable: false },
+                    { name: "systemProgram", isSigner: false, isWritable: false }
+                ],
+                args: [{ name: "solAmount", type: "u64" }]
+            }]
+        };
 
-    let wallet = null;
+        let wallet = null;
 
-    // Értesítés megjelenítése
-    function notify(msg, type = 'success') {
-      const n = document.createElement('div');
-      n.className = `notification ${type}`;
-      n.innerText = msg;
-      document.body.appendChild(n);
-      setTimeout(() => { n.style.opacity = '0'; setTimeout(() => n.remove(), 500); }, 3500);
-    }
+        function notify(msg, type = 'success') {
+            const n = document.createElement('div');
+            n.className = `notification ${type}`;
+            n.innerText = msg;
+            document.body.appendChild(n);
+            setTimeout(() => { n.style.opacity = '0'; setTimeout(() => n.remove(), 500); }, 4000);
+        }
 
-    // Tárca csatlakozás
-    async function connect() {
-      try {
-        if (!window.solana || !window.solana.isPhantom) return notify("Please install Phantom!", "error");
-        const resp = await window.solana.connect();
-        wallet = resp.publicKey;
+        async function connect() {
+            try {
+                if (!window.solana || !window.solana.isPhantom) {
+                    return notify("Phantom wallet not found!", "error");
+                }
+                const resp = await window.solana.connect();
+                wallet = resp.publicKey;
+                
+                document.getElementById('connect-wallet-btn').innerHTML = 
+                    `<i class="fa-solid fa-circle-check mr-2"></i> ${wallet.toString().slice(0,4)}...${wallet.toString().slice(-4)}`;
+                
+                updateBalances();
+                updateBuyButtonState();
+                notify("Wallet connected!");
+            } catch (err) { notify(err.message, "error"); }
+        }
+
+        async function updateBalances() {
+            if (!wallet) return;
+            const connection = new solanaWeb3.Connection(CONFIG.RPC_URL);
+            const bal = await connection.getBalance(wallet);
+            document.getElementById('sol-balance').innerText = (bal / solanaWeb3.LAMPORTS_PER_SOL).toFixed(3);
+        }
+
+        function updateBuyButtonState() {
+            const btn = document.getElementById('buy-btn');
+            const val = parseFloat(document.getElementById('sol-input').value);
+            if (wallet && val > 0) {
+                btn.disabled = false;
+                btn.innerText = "Buy TLX Now";
+                btn.className = "w-full py-5 rounded-2xl font-display font-bold text-xl uppercase tracking-widest transition-all bg-gradient-to-r from-emerald-500 to-emerald-700 text-white shadow-xl shadow-emerald-500/20 hover:scale-[1.02] hover:shadow-emerald-500/40 cursor-pointer";
+            } else if (wallet) {
+                btn.innerText = "Enter Amount";
+                btn.disabled = true;
+                btn.className = "w-full py-5 rounded-2xl font-display font-bold text-xl uppercase tracking-widest transition-all bg-gray-700 text-gray-500 cursor-not-allowed";
+            }
+        }
+
+        async function buy() {
+            const solAmount = parseFloat(document.getElementById('sol-input').value);
+            if (!solAmount || solAmount <= 0) return;
+
+            const btn = document.getElementById('buy-btn');
+            btn.disabled = true;
+            btn.innerText = "Processing Transaction...";
+
+            try {
+                const connection = new solanaWeb3.Connection(CONFIG.RPC_URL, "confirmed");
+                
+                // Anchor Provider setup (Phantom wrapper)
+                const anchorWallet = {
+                    publicKey: window.solana.publicKey,
+                    signTransaction: window.solana.signTransaction.bind(window.solana),
+                    signAllTransactions: window.solana.signAllTransactions.bind(window.solana)
+                };
+
+                const provider = new anchor.AnchorProvider(connection, anchorWallet, { preflightCommitment: "confirmed" });
+                const program = new anchor.Program(IDL, new solanaWeb3.PublicKey(CONFIG.PROGRAM_ID), provider);
+
+                const tlxMintPubkey = new solanaWeb3.PublicKey(CONFIG.TLX_MINT);
+                const adminPubkey = new solanaWeb3.PublicKey(CONFIG.ADMIN_WALLET);
+
+                // Token számlák (ATA) megkeresése
+                const buyerTokenAccount = await splToken.getAssociatedTokenAddress(tlxMintPubkey, wallet);
+                const vaultTokenAccount = await splToken.getAssociatedTokenAddress(tlxMintPubkey, adminPubkey);
+
+                const lamports = new anchor.BN(solAmount * solanaWeb3.LAMPORTS_PER_SOL);
+
+                // Program hívás
+                const tx = await program.methods.buyTokens(lamports)
+                    .accounts({
+                        buyer: wallet,
+                        admin: adminPubkey,
+                        vaultTokenAccount: vaultTokenAccount,
+                        buyerTokenAccount: buyerTokenAccount,
+                        tokenProgram: splToken.TOKEN_PROGRAM_ID,
+                        systemProgram: solanaWeb3.SystemProgram.programId,
+                    })
+                    .rpc();
+
+                notify("Purchase Successful! Check your wallet.");
+                console.log("Signature:", tx);
+                
+                setTimeout(updateBalances, 3000);
+                document.getElementById('sol-input').value = "";
+                document.getElementById('tlx-output').value = "0";
+
+            } catch (err) {
+                console.error(err);
+                if (err.message.includes("0x1")) notify("Insufficient funds for transaction.", "error");
+                else notify("Transaction failed! Make sure you have a TLX token account.", "error");
+            } finally {
+                updateBuyButtonState();
+            }
+        }
+
+        // --- Események ---
+        document.getElementById('connect-wallet-btn').addEventListener('click', connect);
+        document.getElementById('buy-btn').addEventListener('click', buy);
         
-        document.getElementById('connect-wallet-btn').innerHTML = `<i class="fa-solid fa-circle-check mr-2"></i> ${wallet.toString().slice(0,4)}...${wallet.toString().slice(-4)}`;
-        
-        const connection = new solanaWeb3.Connection(CONFIG.RPC_URL);
-        const bal = await connection.getBalance(wallet);
-        document.getElementById('sol-balance').innerText = (bal / solanaWeb3.LAMPORTS_PER_SOL).toFixed(3);
-        
-        updateBuyButtonState();
-        notify("Wallet connected successfully!");
-      } catch (err) { notify(err.message, "error"); }
-    }
-
-    // Gomb állapot frissítése
-    function updateBuyButtonState() {
-      const btn = document.getElementById('buy-btn');
-      const val = parseFloat(document.getElementById('sol-input').value);
-      if (wallet && val > 0) {
-        btn.disabled = false;
-        btn.innerText = "Buy TLX Now";
-        btn.className = "w-full py-5 rounded-2xl font-display font-bold text-xl uppercase tracking-widest transition-all bg-gradient-to-r from-emerald-500 to-emerald-700 text-white shadow-xl shadow-emerald-500/20 hover:scale-[1.02]";
-      } else if (wallet) {
-        btn.innerText = "Enter Amount";
-        btn.disabled = true;
-      }
-    }
-
-    // Vásárlás folyamata
-    async function buy() {
-      const solAmount = parseFloat(document.getElementById('sol-input').value);
-      if (!solAmount || solAmount <= 0) return;
-
-      const btn = document.getElementById('buy-btn');
-      btn.disabled = true;
-      btn.innerText = "Processing...";
-
-      try {
-        const connection = new solanaWeb3.Connection(CONFIG.RPC_URL);
-        const provider = new anchor.AnchorProvider(connection, window.solana, { preflightCommitment: "processed" });
-        const program = new anchor.Program(IDL, new solanaWeb3.PublicKey(CONFIG.PROGRAM_ID), provider);
-
-        const lamports = new anchor.BN(solAmount * solanaWeb3.LAMPORTS_PER_SOL);
-
-        const tx = await program.methods.buyTokens(lamports)
-          .accounts({
-            buyer: wallet,
-            admin: new solanaWeb3.PublicKey(CONFIG.ADMIN_WALLET),
-            systemProgram: solanaWeb3.SystemProgram.programId,
-          })
-          .rpc();
-
-        notify("Transaction successful!");
-        console.log("Tx Signature:", tx);
-        
-        // Frissítés
-        setTimeout(async () => {
-          const bal = await connection.getBalance(wallet);
-          document.getElementById('sol-balance').innerText = (bal / solanaWeb3.LAMPORTS_PER_SOL).toFixed(3);
-        }, 2000);
-
-      } catch (err) {
-        notify(err.message, "error");
-        console.error(err);
-      } finally {
-        updateBuyButtonState();
-      }
-    }
-
-    // Eseményfigyelők
-    document.getElementById('connect-wallet-btn').addEventListener('click', connect);
-    document.getElementById('buy-btn').addEventListener('click', buy);
-    
-    document.getElementById('sol-input').addEventListener('input', (e) => {
-      const val = parseFloat(e.target.value) || 0;
-      document.getElementById('tlx-output').value = (val * CONFIG.RATE).toLocaleString();
-      updateBuyButtonState();
-    });
-  </script>
+        document.getElementById('sol-input').addEventListener('input', (e) => {
+            const val = parseFloat(e.target.value) || 0;
+            document.getElementById('tlx-output').value = (val * CONFIG.RATE).toLocaleString();
+            updateBuyButtonState();
+        });
+    </script>
 </body>
 </html>
