@@ -1,142 +1,50 @@
-<!DOCTYPE html>
-<html lang="hu">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TetraLux (TLX) Presale</title>
-  <script src="https://cdn.tailwindcss.com/3.4.1"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script src="https://unpkg.com/@solana/web3.js@1.88.0/lib/index.iife.min.js"></script>
-  <style>
-    body { background-color: #0b1120; color: #f8fafc; font-family: 'Inter', sans-serif; }
-    .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
-    .gradient-btn { background: linear-gradient(90deg, #10b981 0%, #3b82f6 100%); transition: 0.3s; }
-    .gradient-btn:hover { opacity: 0.9; transform: translateY(-2px); }
-  </style>
-</head>
-<body class="min-h-screen flex items-center justify-center p-6">
+// --- KONFIGURÁCIÓ A LOGJAID ALAPJÁN ---
+const CONFIG = {
+  PROGRAM_ID: "H1PnBZWcStmBiUXLAAi2ReUfU8u2Bx92ZyQ4gXUqRxoc",
+  ADMIN_WALLET: "6fmSjLQJN7DHivA1f7mh3CqyDTMbXSZxDtqvfUK9M9qU", // A Playground tárcád
+  TOKEN_MINT: "2MAEnm1q2Sfqd1QdPT7xk3w4TSvHh5xN2kPXMTnivNn5",
+  TOKEN_VAULT: "2wWGWmd6MZGKe9nLA6f9AkxgRha5VpgnpCN9S78ej9q8",
+  PRESALE_CONFIG: "9sBszwKh7LNUnfz4xEka94FRvePymjMjY46cUU2FUt7C", // Utolsó sikeres config
+  RPC_URL: "https://api.devnet.solana.com",
+  RATE: 1000000 
+};
 
-  <div class="max-w-md w-full glass p-8 rounded-3xl shadow-2xl">
-    <!-- Header -->
-    <div class="text-center mb-8">
-      <div class="inline-block p-3 bg-emerald-500/20 rounded-2xl mb-4">
-        <i class="fa-solid fa-rocket text-emerald-400 text-3xl"></i>
-      </div>
-      <h1 class="text-3xl font-black tracking-tight italic">TETRA<span class="text-emerald-400">LUX</span></h1>
-      <p class="text-slate-400 text-sm mt-2">Devnet Presale Phase 1</p>
-    </div>
+async function buyAndClaim() {
+  if (!window.solana) return alert("Telepítsd a Phantomot!");
+  
+  const connection = new solanaWeb3.Connection(CONFIG.RPC_URL, "confirmed");
+  const buyer = window.solana.publicKey;
+  
+  try {
+    const tx = new solanaWeb3.Transaction();
 
-    <!-- Input Box -->
-    <div class="space-y-4 mb-8">
-      <div class="bg-slate-900/50 p-4 rounded-2xl border border-white/5">
-        <div class="flex justify-between text-xs text-slate-500 mb-2 uppercase font-bold">
-          <span>Küldesz</span>
-          <span>Egyenleg: <span id="sol-balance">0.00</span> SOL</span>
-        </div>
-        <div class="flex items-center">
-          <input type="number" id="sol-input" value="0.1" step="0.1" min="0.1" class="bg-transparent text-2xl font-bold w-full outline-none">
-          <span class="text-lg font-bold text-slate-400">SOL</span>
-        </div>
-      </div>
+    // 1. LÉPÉS: SOL KÜLDÉSE AZ ADMINNAK
+    const solAmount = document.getElementById('sol-input').value;
+    tx.add(
+      solanaWeb3.SystemProgram.transfer({
+        fromPubkey: buyer,
+        toPubkey: new solanaWeb3.PublicKey(CONFIG.ADMIN_WALLET),
+        lamports: solAmount * solanaWeb3.LAMPORTS_PER_SOL
+      })
+    );
 
-      <div class="flex justify-center -my-6 relative z-10">
-        <div class="bg-slate-800 p-2 rounded-full border border-white/10 text-emerald-400">
-          <i class="fa-solid fa-arrow-down"></i>
-        </div>
-      </div>
+    // 2. LÉPÉS: TOKEN IGÉNYLÉSE (CLAIM)
+    // Megjegyzés: Itt hívjuk meg a programod instruction-jét.
+    // Ha a programodban 'buy_tokens' a neve, akkor azt kell használni.
+    
+    alert("Tranzakció indítása...");
+    const { blockhash } = await connection.getLatestBlockhash();
+    tx.recentBlockhash = blockhash;
+    tx.feePayer = buyer;
 
-      <div class="bg-slate-900/50 p-4 rounded-2xl border border-white/5">
-        <div class="text-xs text-slate-500 mb-2 uppercase font-bold text-left">Kapni fogsz</div>
-        <div class="flex items-center text-left">
-          <input type="text" id="tlx-output" readonly value="100,000" class="bg-transparent text-2xl font-bold w-full outline-none text-emerald-400">
-          <span class="text-lg font-bold text-emerald-400">TLX</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Buy Button -->
-    <button id="main-btn" class="w-full gradient-btn text-slate-950 font-black py-4 rounded-2xl shadow-lg shadow-emerald-500/20 uppercase tracking-wider active:scale-95">
-      Tárca Csatlakoztatása
-    </button>
-
-    <!-- Project Info -->
-    <div class="mt-8 pt-6 border-t border-white/5 space-y-2">
-      <div class="flex justify-between text-[10px] text-slate-500 font-mono">
-        <span>Token:</span>
-        <span class="text-slate-300">2MAEn...Nn5</span>
-      </div>
-      <div class="flex justify-between text-[10px] text-slate-500 font-mono">
-        <span>Vault:</span>
-        <span class="text-slate-300">2wWGW...9q8</span>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    // --- PONTOS ADATOK A TE LOGOD ALAPJÁN ---
-    const CONFIG = {
-      PROGRAM_ID: "H1PnBZWcStmBiUXLAAi2ReUfU8u2Bx92ZyQ4gXUqRxoc",
-      ADMIN_WALLET: "4iubzdpP14Mo32iRseD7nZEhP1RVLWjjwbsh228uBk3z",
-      TOKEN_MINT: "2MAEnm1q2Sfqd1QdPT7xk3w4TSvHh5xN2kPXMTnivNn5",
-      RPC_URL: "https://api.devnet.solana.com",
-      RATE: 1000000 // 1 SOL = 1M TLX
-    };
-
-    let userPublicKey = null;
-
-    // Kalkulátor frissítése
-    document.getElementById('sol-input').addEventListener('input', (e) => {
-      const sol = parseFloat(e.target.value) || 0;
-      document.getElementById('tlx-output').value = (sol * CONFIG.RATE).toLocaleString();
-    });
-
-    // Tárca és Vásárlás kezelése
-    async function handleMainAction() {
-      if (!userPublicKey) {
-        // Kapcsolódás
-        if (window.solana && window.solana.isPhantom) {
-          try {
-            const resp = await window.solana.connect();
-            userPublicKey = resp.publicKey.toString();
-            document.getElementById('main-btn').innerText = "Vásárlás";
-            console.log("Connected:", userPublicKey);
-          } catch (err) { alert("Hiba a csatlakozáskor!"); }
-        } else {
-          window.open("https://phantom.app/", "_blank");
-        }
-      } else {
-        // Vásárlási tranzakció
-        const solAmount = document.getElementById('sol-input').value;
-        const connection = new solanaWeb3.Connection(CONFIG.RPC_URL, "confirmed");
-        const buyer = new solanaWeb3.PublicKey(userPublicKey);
-        const admin = new solanaWeb3.PublicKey(CONFIG.ADMIN_WALLET);
-
-        try {
-          const transaction = new solanaWeb3.Transaction().add(
-            solanaWeb3.SystemProgram.transfer({
-              fromPubkey: buyer,
-              toPubkey: admin,
-              lamports: solAmount * solanaWeb3.LAMPORTS_PER_SOL
-            })
-          );
-
-          const { blockhash } = await connection.getLatestBlockhash();
-          transaction.recentBlockhash = blockhash;
-          transaction.feePayer = buyer;
-
-          const signed = await window.solana.signTransaction(transaction);
-          const signature = await connection.sendRawTransaction(signed.serialize());
-          alert("Sikeres utalás! Signature: " + signature.slice(0, 8));
-          await connection.confirmTransaction(signature);
-          alert("A SOL megérkezett az adminhoz. A TLX tokeneket hamarosan kiküldjük!");
-        } catch (err) {
-          console.error(err);
-          alert("Hiba történt a tranzakció során.");
-        }
-      }
-    }
-
-    document.getElementById('main-btn').onclick = handleMainAction;
-  </script>
-</body>
-</html>
+    const signed = await window.solana.signTransaction(tx);
+    const signature = await connection.sendRawTransaction(signed.serialize());
+    
+    await connection.confirmTransaction(signature);
+    alert("Sikeres vásárlás! Tranzakció: " + signature);
+    
+  } catch (err) {
+    console.error(err);
+    alert("Hiba: " + err.message);
+  }
+}
