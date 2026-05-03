@@ -1,184 +1,125 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0f172a">
   <title>TetraLux (TLX) | Presale Dashboard</title>
-
-  <!-- TailwindCSS & FontAwesome -->
   <script src="https://cdn.tailwindcss.com/3.4.1"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Rajdhani:wght@700&display=swap" rel="stylesheet">
-  
-  <!-- Solana Web3 JS -->
   <script src="https://unpkg.com/@solana/web3.js@1.88.0/lib/index.iife.min.js"></script>
-
   <style>
     body { background-color: #0f172a; color: #e2e8f0; font-family: 'Inter', sans-serif; }
-    .glass-panel { background: rgba(255,255,255,0.04); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; }
-    .glass-panel:hover { border-color: rgba(52, 211, 153, 0.4); }
-    .gradient-text { background: linear-gradient(to right, #34d399, #fbbf24); -webkit-background-clip:text; -webkit-text-fill-color:transparent;}
-    .notification { position: fixed; bottom: 20px; right: 20px; padding: 16px 24px; border-radius: 12px; z-index: 9999; animation: slideIn 0.3s ease-out; }
-    .notification.success { background: #059669; color: white; box-shadow: 0 4px 15px rgba(5, 150, 105, 0.4); }
-    .notification.error { background: #dc2626; color: white; box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4); }
-    @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+    .glass { background: rgba(255,255,255,0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); }
+    .neon-border { border: 1px solid rgba(52, 211, 153, 0.3); box-shadow: 0 0 20px rgba(52, 211, 153, 0.1); }
   </style>
 </head>
-<body class="antialiased">
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
 
-  <!-- Navigation -->
-  <nav class="fixed w-full z-50 glass-panel border-b border-white/5">
-    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-      <div class="flex items-center gap-2">
-        <div class="w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center shadow-lg shadow-emerald-500/20">
-            <i class="fa-solid fa-gem text-white"></i>
+  <div class="max-w-md w-full glass p-8 rounded-[2rem] text-center neon-border">
+    <div class="mb-6">
+        <h1 class="text-4xl font-bold tracking-tighter text-white">TETRA<span class="text-emerald-400">LUX</span></h1>
+        <div class="inline-block px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[10px] text-emerald-400 font-bold mt-2 uppercase tracking-widest">
+            Devnet Live
         </div>
-        <span class="text-2xl font-bold tracking-tighter text-white">TETRA<span class="text-emerald-400">LUX</span></span>
-      </div>
-      <button id="connect-wallet-btn" class="bg-white text-slate-900 font-bold py-2.5 px-6 rounded-xl hover:bg-emerald-400 transition-all active:scale-95 shadow-lg">
-        <i class="fa-solid fa-wallet mr-2"></i> Connect Wallet
-      </button>
     </div>
-  </nav>
 
-  <!-- Main Content -->
-  <main class="pt-32 pb-20 px-4">
-    <div class="max-w-4xl mx-auto text-center">
-      <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
-        Join the <span class="gradient-text">Future of DeFi</span>
-      </h1>
-      <p class="text-gray-400 text-lg mb-12 max-w-2xl mx-auto">
-        A TetraLux presale elindult. Vásárolj TLX tokent közvetlenül a Devneten az okosszerződésünkön keresztül.
-      </p>
-
-      <!-- Presale Card -->
-      <div class="max-w-md mx-auto glass-panel p-8 rounded-[2.5rem] relative overflow-hidden">
-        <div class="absolute top-0 right-0 p-4">
-            <span class="bg-emerald-500/10 text-emerald-400 text-xs font-bold px-3 py-1 rounded-full border border-emerald-500/20">DEVNET ACTIVE</span>
-        </div>
-
-        <div class="text-left mb-8">
-          <label class="text-sm font-semibold text-gray-500 ml-1">You pay</label>
-          <div class="mt-2 flex items-center bg-black/40 border border-white/10 rounded-2xl p-4 focus-within:border-emerald-500/50 transition">
-            <input type="number" id="sol-input" value="0.1" step="0.1" min="0" class="bg-transparent text-2xl font-bold w-full outline-none" placeholder="0.0">
-            <span class="font-bold text-gray-400 ml-2">SOL</span>
+    <div class="space-y-4 mb-8">
+      <div class="bg-black/30 p-4 rounded-2xl border border-white/5 text-left transition-all focus-within:border-emerald-500/50">
+        <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest ml-1">You Pay (SOL)</label>
+        <input type="number" id="sol-input" value="0.1" step="0.1" class="w-full bg-transparent text-2xl font-bold outline-none text-white">
+      </div>
+      
+      <div class="flex justify-center -my-2 relative z-10">
+          <div class="bg-slate-800 p-2 rounded-full border border-white/10">
+              <i class="fa-solid fa-arrow-down text-emerald-400"></i>
           </div>
-        </div>
-
-        <div class="text-left mb-10">
-          <label class="text-sm font-semibold text-gray-500 ml-1">You receive (approx.)</label>
-          <div class="mt-2 flex items-center bg-black/40 border border-white/10 rounded-2xl p-4">
-            <input type="text" id="tlx-output" readonly value="100,000" class="bg-transparent text-2xl font-bold w-full outline-none text-emerald-400" placeholder="0">
-            <span class="font-bold text-emerald-400/50 ml-2">TLX</span>
-          </div>
-          <p class="text-[10px] text-gray-500 mt-2 ml-1 italic">*Rate: 1 SOL = 1,000,000 TLX</p>
-        </div>
-
-        <button id="buy-btn" class="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white font-bold py-5 rounded-2xl shadow-xl shadow-emerald-500/20 transition-all active:scale-[0.98] disabled:opacity-50">
-          Connect Wallet to Buy
-        </button>
       </div>
 
-      <!-- Stats Grid -->
-      <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-12 max-w-2xl mx-auto">
-        <div class="glass-panel p-4 rounded-2xl">
-            <p class="text-xs text-gray-500 uppercase font-bold tracking-widest mb-1">Status</p>
-            <p class="text-emerald-400 font-bold">Live</p>
-        </div>
-        <div class="glass-panel p-4 rounded-2xl">
-            <p class="text-xs text-gray-500 uppercase font-bold tracking-widest mb-1">Target</p>
-            <p class="text-white font-bold">40M TLX</p>
-        </div>
-        <div class="glass-panel p-4 rounded-2xl col-span-2 md:col-span-1">
-            <p class="text-xs text-gray-500 uppercase font-bold tracking-widest mb-1">Network</p>
-            <p class="text-white font-bold">Solana Devnet</p>
-        </div>
+      <div class="bg-black/30 p-4 rounded-2xl border border-white/5 text-left">
+        <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest ml-1">You Receive (TLX)</label>
+        <input type="text" id="tlx-output" readonly value="100,000" class="w-full bg-transparent text-2xl font-bold outline-none text-emerald-400">
       </div>
     </div>
-  </main>
+
+    <button id="buy-btn" class="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-slate-900 font-black py-4 rounded-2xl transition-all shadow-xl shadow-emerald-500/20 active:scale-95">
+      CONNECT WALLET
+    </button>
+
+    <div class="mt-8 grid grid-cols-2 gap-2 text-[9px] text-gray-500">
+        <div class="bg-white/5 p-2 rounded-lg">
+            <p class="font-bold text-gray-400 uppercase">Rate</p>
+            <p>1 SOL = 1M TLX</p>
+        </div>
+        <div class="bg-white/5 p-2 rounded-lg">
+            <p class="font-bold text-gray-400 uppercase">Network</p>
+            <p>Solana Devnet</p>
+        </div>
+    </div>
+  </div>
 
   <script>
-    // --- KONFIGURÁCIÓ (A Te adataid alapján frissítve) ---
     const CONFIG = {
       PROGRAM_ID: "H1PnBZWcStmBiUXLAAi2ReUfU8u2Bx92ZyQ4gXUqRxoc",
       ADMIN_WALLET: "4iubzdpP14Mo32iRseD7nZEhP1RVLWjjwbsh228uBk3z",
-      VAULT_ADDRESS: "H8y13mCAgmnntsmQz1XUEyiEMbZr8CWh8b8SYsBLsoAs",
+      TOKEN_MINT: "2MAEnm1q2Sfqd1QdPT7xk3w4TSvHh5xN2kPXMTnivNn5",
+      VAULT: "2wWGWmd6MZGKe9nLA6f9AkxgRha5VpgnpCN9S78ej9q8",
       RPC_URL: "https://api.devnet.solana.com",
       RATE: 1000000
     };
 
-    let userPublicKey = null;
+    let wallet = null;
 
-    function notify(msg, type = 'success') {
-      const div = document.createElement('div');
-      div.className = `notification ${type}`;
-      div.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-circle-check' : 'fa-circle-exclamation'} mr-2"></i> ${msg}`;
-      document.body.appendChild(div);
-      setTimeout(() => { div.style.opacity = '0'; setTimeout(() => div.remove(), 500); }, 4000);
-    }
-
-    async function connectWallet() {
-      if (window.solana && window.solana.isPhantom) {
+    async function connect() {
+      if (window.solana) {
         try {
           const resp = await window.solana.connect();
-          userPublicKey = resp.publicKey.toString();
-          document.getElementById('connect-wallet-btn').innerHTML = `<i class="fa-solid fa-circle text-emerald-400 mr-2 text-[10px]"></i> ${userPublicKey.slice(0,4)}...${userPublicKey.slice(-4)}`;
-          document.getElementById('buy-btn').innerText = "Buy TLX Now";
-          notify("Wallet Connected!");
-        } catch (err) {
-          notify("Connection refused", "error");
-        }
+          wallet = resp.publicKey.toString();
+          document.getElementById('buy-btn').innerText = "BUY TLX NOW";
+        } catch (e) { console.error("Connection failed"); }
       } else {
-        window.open("https://phantom.app/", "_blank");
+        alert("Phantom Wallet not found!");
       }
     }
 
-    // Input kalkulátor
     document.getElementById('sol-input').oninput = (e) => {
       const val = parseFloat(e.target.value) || 0;
       document.getElementById('tlx-output').value = (val * CONFIG.RATE).toLocaleString();
     };
 
-    async function handleBuy() {
-      if (!userPublicKey) return connectWallet();
+    async function handleTransaction() {
+      if (!wallet) return connect();
       
-      const amount = parseFloat(document.getElementById('sol-input').value);
-      if (amount <= 0) return notify("Enter a valid amount!", "error");
+      const solAmount = document.getElementById('sol-input').value;
+      const connection = new solanaWeb3.Connection(CONFIG.RPC_URL, "confirmed");
+      const buyer = new solanaWeb3.PublicKey(wallet);
+      const admin = new solanaWeb3.PublicKey(CONFIG.ADMIN_WALLET);
 
       try {
-        const connection = new solanaWeb3.Connection(CONFIG.RPC_URL, "confirmed");
-        const buyer = new solanaWeb3.PublicKey(userPublicKey);
-        const admin = new solanaWeb3.PublicKey(CONFIG.ADMIN_WALLET);
-
-        notify("Confirming transaction...");
-
-        const transaction = new solanaWeb3.Transaction().add(
+        const tx = new solanaWeb3.Transaction().add(
           solanaWeb3.SystemProgram.transfer({
             fromPubkey: buyer,
             toPubkey: admin,
-            lamports: amount * solanaWeb3.LAMPORTS_PER_SOL,
+            lamports: solAmount * solanaWeb3.LAMPORTS_PER_SOL
           })
         );
 
         const { blockhash } = await connection.getLatestBlockhash();
-        transaction.recentBlockhash = blockhash;
-        transaction.feePayer = buyer;
+        tx.recentBlockhash = blockhash;
+        tx.feePayer = buyer;
 
-        const signed = await window.solana.signTransaction(transaction);
+        const signed = await window.solana.signTransaction(tx);
         const signature = await connection.sendRawTransaction(signed.serialize());
+        alert("Transaction Sent! Signature: " + signature.slice(0, 8));
+        
         await connection.confirmTransaction(signature);
-
-        notify("Success! SOL sent to Admin.");
-        console.log("Tx Signature:", signature);
+        alert("Success! SOL received by Admin. (A tokenküldéshez hívd meg a claim függvényt vagy automatizáld)");
       } catch (err) {
         console.error(err);
-        notify(err.message.includes("User rejected") ? "Transaction cancelled" : "Transaction failed", "error");
+        alert("Transaction failed!");
       }
     }
 
-    document.getElementById('connect-wallet-btn').onclick = connectWallet;
-    document.getElementById('buy-btn').onclick = handleBuy;
+    document.getElementById('buy-btn').onclick = handleTransaction;
   </script>
 </body>
 </html>
