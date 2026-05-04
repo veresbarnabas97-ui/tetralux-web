@@ -7,16 +7,10 @@
   <meta name="description" content="TetraLux (TLX) - Ethical DeFi on Solana. Stability, Passive Income, Community.">
   <title>TetraLux (TLX) | Ethical DeFi on Solana</title>
 
-  <!-- TailwindCSS -->
   <script src="https://cdn.tailwindcss.com/3.4.1"></script>
-  <!-- FontAwesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    integrity="sha512-k6HSoHyYK+854DVkTBc5A50K2Qd+ni2ClSD5RnMbKWWxaj2uFbRNSOYAcIL7V8/7L29HWE9It7uoUQUotXe8jw=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
   
-  <!-- Solana & Anchor SDKs -->
   <script src="https://unpkg.com/@solana/web3.js@1.88.0/lib/index.iife.min.js"></script>
   <script src="https://unpkg.com/@coral-xyz/anchor@0.29.0/dist/browser.anchor.min.js"></script>
   <script src="https://unpkg.com/@solana/spl-token@0.3.9/lib/index.iife.min.js"></script>
@@ -55,13 +49,11 @@
   </style>
 </head>
 <body class="antialiased">
-  <!-- BG Blobs -->
   <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-[-1] pointer-events-none">
     <div class="absolute top-[-10%] right-[-5%] w-96 h-96 bg-emerald-500 rounded-full mix-blend-multiply filter blur-[100px] opacity-20"></div>
     <div class="absolute bottom-[-10%] left-[-10%] w-96 h-96 bg-solana rounded-full mix-blend-multiply filter blur-[100px] opacity-20"></div>
   </div>
 
-  <!-- Navbar -->
   <nav class="fixed w-full z-50 glass-panel border-b border-gray-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-20">
@@ -99,7 +91,6 @@
     </div>
   </nav>
 
-  <!-- HERO / ABOUT -->
   <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden" id="about">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <h1 class="text-5xl md:text-7xl font-display font-bold mb-6">
@@ -127,7 +118,7 @@
         <button id="open-presale-btn" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 px-8 rounded-lg shadow-lg transition w-full sm:w-auto">
           Join Presale
         </button>
-        <a href="./whitepaper.pdf" target="_blank" rel="noopener noreferrer" class="glass-panel hover:bg-white/10 text-white font-bold py-4 px-8 rounded-lg border border-gray-600 transition w-full sm:w-auto text-center">
+        <a href="./TetraLux-Whitepaper.pdf" target="_blank" rel="noopener noreferrer" class="glass-panel hover:bg-white/10 text-white font-bold py-4 px-8 rounded-lg border border-gray-600 transition w-full sm:w-auto text-center">
           Read Whitepaper
         </a>
       </div>
@@ -148,7 +139,6 @@
     </div>
   </section>
 
-  <!-- TOKENOMICS -->
   <section id="tokenomics" class="py-20 bg-gray-900/50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16">
@@ -191,7 +181,6 @@
     </div>
   </section>
 
-  <!-- NFT -->
   <section id="nft" class="py-20 relative overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-b from-gray-900 to-emerald-900/20"></div>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -247,7 +236,6 @@
     </div>
   </section>
 
-  <!-- Roadmap -->
   <section id="roadmap" class="py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <h2 class="text-4xl font-display font-bold text-center mb-16">Roadmap</h2>
@@ -277,8 +265,7 @@
     </div>
   </section>
 
-  <!-- Presale Modal -->
-  <div id="presale-modal" tabindex="-1" aria-modal="true" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+  <div id="presale-modal" tabindex="-1" aria-modal="true" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
     <div class="relative w-full max-w-lg glass-panel rounded-3xl border border-emerald-500/30 p-8">
       <button id="close-presale" class="absolute top-4 right-4 text-gray-400 hover:text-white transition" aria-label="Close presale modal">
         <i class="fa-solid fa-xmark text-2xl"></i>
@@ -286,10 +273,8 @@
       <div class="text-center mb-8">
         <h2 class="text-3xl font-display font-bold text-white mb-2">Presale is Live</h2>
         <p class="text-sm text-gray-400">Exchange SOL for TLX directly via Smart Contract.</p>
-        <p class="text-xs mt-2">Network: <span id="network-label" class="text-emerald-400 font-bold">Solana Mainnet</span></p>
-        <p class="text-xs text-gray-500 mt-1">Program: <code class="text-gray-400 text-[10px]">CmG5CsTc...</code></p>
+        <p class="text-xs mt-2">Network: <span id="network-label" class="text-emerald-400 font-bold">Solana Devnet</span></p>
       </div>
-      <!-- Progress Bar -->
       <div class="mb-6">
         <div class="flex justify-between text-xs mb-2">
           <span class="text-gray-400">Tokens Sold</span>
@@ -299,19 +284,17 @@
           <div id="progress-bar" class="bg-gradient-to-r from-emerald-500 to-emerald-300 h-full w-[0%] transition-all duration-1000"></div>
         </div>
       </div>
-      <!-- Exchange Info -->
       <div class="bg-black/40 rounded-xl p-4 border border-white/5 flex justify-between items-center mb-4">
         <span class="text-gray-400 text-sm">Exchange Rate</span>
         <span class="font-bold text-emerald-400">1 SOL = 1,000,000 TLX</span>
       </div>
-      <!-- Inputs -->
       <div class="space-y-4 mb-6">
         <div class="bg-gray-900/50 rounded-2xl p-4 border border-gray-700">
           <div class="flex justify-between text-xs text-gray-400 mb-2">
             <span>You Send</span>
             <span>Balance: <span id="sol-balance">0.00</span> SOL</span>
           </div>
-          <input type="number" id="sol-input" placeholder="0.0" step="0.01" min="0.01" max="10" class="w-full bg-transparent text-3xl font-bold text-white outline-none" aria-label="SOL amount to send">
+          <input type="number" id="sol-input" placeholder="0.0" step="0.01" min="0.01" class="w-full bg-transparent text-3xl font-bold text-white outline-none" aria-label="SOL amount to send">
         </div>
         <div class="flex justify-center -my-3 relative z-10">
           <div class="bg-gray-800 p-2 rounded-full border border-gray-700">
@@ -325,14 +308,12 @@
           <input type="text" id="tlx-output" placeholder="0" readonly class="w-full bg-transparent text-3xl font-bold text-emerald-400 outline-none" aria-label="TLX amount to receive">
         </div>
       </div>
-      <!-- Buy -->
       <button id="buy-btn" disabled class="w-full bg-gray-700 text-gray-400 font-bold py-4 rounded-xl transition cursor-not-allowed uppercase tracking-wide" aria-busy="false">
         Connect Wallet to Buy
       </button>
     </div>
   </div>
 
-  <!-- Footer -->
   <footer class="bg-black py-12 border-t border-gray-800 text-sm text-gray-500 text-center">
     <div class="max-w-7xl mx-auto px-4">
       <span class="text-2xl font-display font-bold text-white mb-4 block">TETRALUX</span>
@@ -340,73 +321,74 @@
     </div>
   </footer>
 
-  <!-- MAIN APP JS -->
   <script>
-    // ===================== CONFIG (A javaslat adataival) =====================
+    // ===================== CONFIG =====================
     const CONFIG = {
-      NETWORK: "devnet", 
-      PRESALE_CONTRACT: "CmG5CsTcMyccMTanSMTCe9DV8VgsdkskYBJJ8WgLz8bm",
-      TOKEN_MINT: "BPk4cKiNm3DovoHGbfTbsGabAVxsbyHHe3tLFq8rkaib",
+      NETWORK: "devnet", // "mainnet-beta" for production later
+      RPC_URL: "https://api.devnet.solana.com",
+      
+      // IDE FOG KERÜLNI AZ ÚJ PROGRAM ID, AMIKOR ÚJRA LÉTREHOZZUK A PLAYGROUNDBAN!
+      // Addig a régit hagyjuk itt, hogy ne dobjon hibát a kód felépítése.
+      PROGRAM_ID: "CmG5CsTcMyccMTanSMTCe9DV8VgsdkskYBJJ8WgLz8bm", 
+      
+      TOKEN_MINT: "BPk4cKiNm3DovoHGbfTbsGabAVxsbyHHe3tLFq8rkaib", // A Te devnetes TLX tokened
       ADMIN_WALLET: "4iubzdpP14Mo32iRseD7nZEhP1RVLWjjwbsh228uBk3z",
       EXCHANGE_RATE: 1000000,
       MIN_SOL: 0.01,
-      MAX_SOL: 10,
-      RPC_URL: "https://api.devnet.solana.com",
       PRESALE_CAP: 40000000
     };
 
+    // IDL - Az okosszerződés utasítás-térképe
     const IDL = {
       "version": "0.1.0", "name": "tetraluxpresale",
       "instructions": [{
           "name": "buyTokens",
           "accounts": [
             {"name": "buyer", "isMut": true, "isSigner": true},
-            {"name": "admin", "isMut": true},
-            {"name": "presaleState", "isMut": false},
-            {"name": "vault", "isMut": true},
-            {"name": "buyerTokenAccount", "isMut": true},
-            {"name": "tokenProgram", "isMut": false},
-            {"name": "systemProgram", "isMut": false}
+            {"name": "admin", "isMut": true, "isSigner": false},
+            {"name": "presaleState", "isMut": false, "isSigner": false},
+            {"name": "vault", "isMut": true, "isSigner": false},
+            {"name": "buyerTokenAccount", "isMut": true, "isSigner": false},
+            {"name": "tokenProgram", "isMut": false, "isSigner": false},
+            {"name": "systemProgram", "isMut": false, "isSigner": false}
           ],
           "args": [{"name": "solAmount", "type": "u64"}]
       }]
     };
 
-    // ============ State =============
+    // ============ Állapot (State) =============
     let walletConnected = false;
     let userPublicKey = null;
     let userBalance = 0;
+    const connection = new solanaWeb3.Connection(CONFIG.RPC_URL, "confirmed");
 
-    // ========== Utility =============
+    // ========== Utility & Értesítések =============
     function showNotification(message, type = 'info') {
       const notification = document.createElement('div');
       notification.className = `notification ${type}`;
       notification.textContent = message;
-      notification.setAttribute('role', 'alert');
       document.body.appendChild(notification);
       setTimeout(() => {
         notification.classList.add('exit');
         setTimeout(() => notification.remove(), 300);
       }, 3000);
     }
-    
+
     function formatNumber(num) {
       return new Intl.NumberFormat('en-US').format(Math.floor(num));
     }
-    
+
     function updateProgressBar(sold, total) {
       const percentage = Math.min((sold / total) * 100, 100);
       document.getElementById('progress-bar').style.width = percentage + "%";
-      document.getElementById('progress-bar').setAttribute('aria-valuenow', Math.floor(percentage));
       document.getElementById('sold-amount').textContent = formatNumber(sold);
     }
 
-    // ========== Web3 Basic ===========
+    // ========== Web3 Csatlakozás ===========
     async function getUserBalance(publicKey) {
       try {
-        const connection = new window.solanaWeb3.Connection(CONFIG.RPC_URL);
-        const balance = await connection.getBalance(new window.solanaWeb3.PublicKey(publicKey));
-        return balance / window.solanaWeb3.LAMPORTS_PER_SOL;
+        const balance = await connection.getBalance(new solanaWeb3.PublicKey(publicKey));
+        return balance / solanaWeb3.LAMPORTS_PER_SOL;
       } catch (error) {
         return 0;
       }
@@ -421,22 +403,14 @@
       if (connected) {
         const addrView = pubKeyStr.slice(0,4) + "..." + pubKeyStr.slice(-4);
         desktopBtn.innerHTML = `<i class="fa-solid fa-check mr-2"></i> ${addrView}`;
-        desktopBtn.classList.remove('bg-gradient-to-r','from-emerald-500','to-emerald-700','hover:from-emerald-600','hover:to-emerald-800');
-        desktopBtn.classList.add('bg-gray-700','hover:bg-gray-800','border','border-gray-600');
+        desktopBtn.classList.replace('bg-emerald-500', 'bg-gray-700');
+        desktopBtn.classList.add('border', 'border-gray-600');
         mobileBtn.innerHTML = `<i class="fa-solid fa-check mr-2"></i> Connected`;
-        mobileBtn.classList.remove('bg-emerald-600');
-        mobileBtn.classList.add('bg-gray-700');
         buyBtn.innerText = 'Buy TLX';
       } else {
         desktopBtn.innerHTML = '<i class="fa-solid fa-wallet mr-2"></i> Connect';
-        desktopBtn.classList.add('bg-gradient-to-r','from-emerald-500','to-emerald-700','hover:from-emerald-600','hover:to-emerald-800');
-        desktopBtn.classList.remove('bg-gray-700','hover:bg-gray-800','border','border-gray-600');
-        mobileBtn.innerHTML = '<i class="fa-solid fa-wallet mr-2"></i> Connect Wallet';
-        mobileBtn.classList.remove('bg-gray-700');
-        mobileBtn.classList.add('bg-emerald-600');
         buyBtn.disabled = true;
         buyBtn.classList.add('bg-gray-700','text-gray-400','cursor-not-allowed');
-        buyBtn.classList.remove('bg-emerald-500','hover:bg-emerald-600','text-white','shadow-lg');
         buyBtn.innerText = 'Connect Wallet to Buy';
         document.getElementById('sol-balance').textContent = '0.00';
       }
@@ -452,128 +426,111 @@
           document.getElementById('sol-balance').textContent = userBalance.toFixed(2);
           showNotification(`✓ Connected: ${userPublicKey.slice(0, 8)}...`, 'success');
         } else {
-          const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-          if (isMobile) {
-            window.location.href = "https://phantom.app/ul/browse/" + encodeURIComponent(window.location.href);
-          } else {
-            showNotification('Phantom Wallet not detected. Opening installer...', 'info');
-            window.open('https://phantom.app/', '_blank');
-          }
+          window.open('https://phantom.app/', '_blank');
         }
       } catch (error) {
         showNotification('Connection failed. Try again.', 'error');
       }
     }
 
-    // ============= Anchor Presale Tranzakció ===============
-    async function presaleBuy(solAmount) {
+    // ============= OKOSSZERZŐDÉS VÁSÁRLÁSI LOGIKA ===============
+    async function presaleBuy() {
+      const solAmount = parseFloat(document.getElementById('sol-input').value);
+      if (!solAmount || solAmount < CONFIG.MIN_SOL) {
+        return showNotification(`Minimum purchase is ${CONFIG.MIN_SOL} SOL`, 'warning');
+      }
+
       const buyBtn = document.getElementById('buy-btn');
-      buyBtn.setAttribute('aria-busy', 'true');
-      buyBtn.disabled = true;
       buyBtn.innerText = 'Processing...';
+      buyBtn.disabled = true;
       buyBtn.classList.add('animate-pulse');
 
       try {
-        if (!window.solana || !window.solana.isPhantom) {
-          throw new Error("Phantom wallet nem található!");
-        }
+        if (!window.solana || !window.solana.isPhantom) throw new Error("Phantom wallet not found!");
 
-        const connection = new window.solanaWeb3.Connection(CONFIG.RPC_URL, 'confirmed');
-        const provider = new anchor.AnchorProvider(connection, window.solana, { commitment: "confirmed" });
-        
-        const programId = new window.solanaWeb3.PublicKey(CONFIG.PRESALE_CONTRACT);
+        showNotification('Waiting for approval in Phantom...', 'info');
+
+        // Anchor Provider beállítása
+        const provider = new anchor.AnchorProvider(connection, window.solana, { preflightCommitment: "confirmed" });
+        const programId = new solanaWeb3.PublicKey(CONFIG.PROGRAM_ID);
         const program = new anchor.Program(IDL, programId, provider);
 
-        const adminWalletPubKey = new window.solanaWeb3.PublicKey(CONFIG.ADMIN_WALLET);
-        const userWalletPubKey = new window.solanaWeb3.PublicKey(userPublicKey);
-        const tlxMintPubKey = new window.solanaWeb3.PublicKey(CONFIG.TOKEN_MINT);
+        // PDA-k generálása a szerződéshez
+        const [presaleState] = solanaWeb3.PublicKey.findProgramAddressSync([Buffer.from("presale")], programId);
+        const [vault] = solanaWeb3.PublicKey.findProgramAddressSync([Buffer.from("vault")], programId);
+        const tlxMint = new solanaWeb3.PublicKey(CONFIG.TOKEN_MINT);
+        const userWalletPubKey = new solanaWeb3.PublicKey(userPublicKey);
 
-        // PDA-k generálása
-        const [presaleState] = window.solanaWeb3.PublicKey.findProgramAddressSync([Buffer.from("presale")], programId);
-        const [vault] = window.solanaWeb3.PublicKey.findProgramAddressSync([Buffer.from("vault")], programId);
+        // Vásárló Token Számlája (ATA)
+        const buyerATA = await splToken.getAssociatedTokenAddress(tlxMint, userWalletPubKey);
 
-        // --- AUTOMATIKUS TOKEN SZÁMLA KERESÉS/LÉTREHOZÁS ---
-        const buyerATA = await splToken.getAssociatedTokenAddress(tlxMintPubKey, userWalletPubKey);
-        let tx = new window.solanaWeb3.Transaction();
+        let tx = new solanaWeb3.Transaction();
 
-        // Ellenőrizzük, létezik-e a vevőnek TLX számlája
+        // Ellenőrizzük, kell-e létrehozni Token Számlát (ha a vevőnek még sosem volt TLX-e)
         try {
           await splToken.getAccount(connection, buyerATA);
         } catch (e) {
-          // Ha nem létezik, hozzáadjuk az ATA létrehozó utasítást
           tx.add(splToken.createAssociatedTokenAccountInstruction(
-            userWalletPubKey, 
-            buyerATA, 
-            userWalletPubKey, 
-            tlxMintPubKey
+            userWalletPubKey, buyerATA, userWalletPubKey, tlxMint
           ));
         }
 
-        // Anchor vásárlási instrukció hozzáadása
+        // Vásárlási Instrukció hozzáadása a tranzakcióhoz
         const buyIx = await program.methods
-          .buyTokens(new anchor.BN(solAmount * window.solanaWeb3.LAMPORTS_PER_SOL))
+          .buyTokens(new anchor.BN(solAmount * solanaWeb3.LAMPORTS_PER_SOL))
           .accounts({
             buyer: userWalletPubKey,
-            admin: adminWalletPubKey,
+            admin: new solanaWeb3.PublicKey(CONFIG.ADMIN_WALLET),
             presaleState: presaleState,
             vault: vault,
             buyerTokenAccount: buyerATA,
             tokenProgram: splToken.TOKEN_PROGRAM_ID,
-            systemProgram: window.solanaWeb3.SystemProgram.programId,
+            systemProgram: solanaWeb3.SystemProgram.programId,
           })
           .instruction();
-        
+
         tx.add(buyIx);
 
-        showNotification('Kérjük hagyd jóvá a tranzakciót a Phantom tárcádban...', 'info');
-
-        // A Provider elküldi és jóváhagyja a tranzakciót
+        // Tranzakció aláíratása és küldése
         const signature = await provider.sendAndConfirm(tx);
-
-        showNotification('Tranzakció elküldve! Megerősítésre vár...', 'info');
-
-        // Sikeres tranzakció utáni UI frissítés
-        const currentSoldStr = document.getElementById('sold-amount').innerText.replace(/,/g, '');
-        const currentSold = parseInt(currentSoldStr) || 0;
-        const newTokens = solAmount * CONFIG.EXCHANGE_RATE;
-        updateProgressBar(currentSold + newTokens, CONFIG.PRESALE_CAP);
-
-        showNotification(`✓ Sikeres tranzakció! Azonosító: ${signature.slice(0,8)}...`, 'success');
-
-        // Egyenleg frissítése a vásárlás után
+        
+        // Siker! Frissítjük a UI-t
+        showNotification(`✓ Transaction successful! ID: ${signature.slice(0,8)}...`, 'success');
+        
         userBalance = await getUserBalance(userWalletPubKey);
         document.getElementById('sol-balance').textContent = userBalance.toFixed(2);
+        
+        // Kamu progress bar növelés a látvány kedvéért
+        const currentSold = parseInt(document.getElementById('sold-amount').innerText.replace(/,/g, '')) || 0;
+        updateProgressBar(currentSold + (solAmount * CONFIG.EXCHANGE_RATE), CONFIG.PRESALE_CAP);
 
       } catch (error) {
-        console.error("Tranzakciós hiba:", error);
-        showNotification(`Hiba történt: ${error.message || 'Tranzakció megszakítva'}`, 'error');
+        console.error(error);
+        showNotification(`Transaction failed. Ensure Smart Contract is deployed.`, 'error');
       } finally {
-        buyBtn.setAttribute('aria-busy', 'false');
-        buyBtn.disabled = false;
         buyBtn.innerText = 'Buy TLX';
+        buyBtn.disabled = false;
         buyBtn.classList.remove('animate-pulse');
       }
     }
 
+    // ================= ESEMÉNYKEZELŐK =================
     document.addEventListener('DOMContentLoaded', () => {
-      // Modal controls
+      // Modal logika
       const modal = document.getElementById('presale-modal');
-      document.getElementById('open-presale-btn').onclick = () => {
-        modal.classList.remove('hidden');
-        setTimeout(() => modal.focus(), 100); 
-      };
+      document.getElementById('open-presale-btn').onclick = () => modal.classList.remove('hidden');
       document.getElementById('close-presale').onclick = () => modal.classList.add('hidden');
       modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.add('hidden'); });
 
-      // Wallet connect
+      // Csatlakozás gombok
       document.getElementById('connect-wallet-btn').onclick = handleConnect;
       document.getElementById('connect-wallet-mobile').onclick = handleConnect;
 
-      // Input & Buy
+      // Input mező kalkulátor és Gomb aktiváló
       const solInput = document.getElementById('sol-input');
       solInput.oninput = (e) => {
         const val = parseFloat(solInput.value);
-        if (!isNaN(val) && val >= CONFIG.MIN_SOL && val <= CONFIG.MAX_SOL) {
+        if (!isNaN(val) && val >= CONFIG.MIN_SOL) {
           document.getElementById('tlx-output').value = formatNumber(val * CONFIG.EXCHANGE_RATE);
           if (walletConnected) {
             const buyBtn = document.getElementById('buy-btn');
@@ -591,31 +548,21 @@
           }
         }
       };
-      
+
+      // Vásárlás gomb
       document.getElementById('buy-btn').onclick = () => {
-        if (!walletConnected || !solInput.value) {
-          showNotification('Please connect wallet and enter amount', 'warning');
-          return;
-        }
-        const solAmount = parseFloat(solInput.value);
-        if (solAmount < CONFIG.MIN_SOL || solAmount > CONFIG.MAX_SOL) {
-          showNotification(`Amount must be between ${CONFIG.MIN_SOL} and ${CONFIG.MAX_SOL} SOL`, 'warning');
-          return;
-        }
-        presaleBuy(solAmount);
+        if (!walletConnected) return showNotification('Please connect wallet first', 'warning');
+        presaleBuy();
       };
 
-      // Mobile menu
+      // Mobil menü
       const mobileBtn = document.getElementById('mobile-menu-btn');
       const mobileMenu = document.getElementById('mobile-menu');
       mobileBtn.onclick = () => {
         mobileMenu.classList.toggle('open');
         const icon = mobileBtn.querySelector('i');
-        if (mobileMenu.classList.contains('open')) {
-          icon.classList.remove('fa-bars'); icon.classList.add('fa-xmark');
-        } else {
-          icon.classList.remove('fa-xmark'); icon.classList.add('fa-bars');
-        }
+        icon.classList.toggle('fa-bars');
+        icon.classList.toggle('fa-xmark');
       };
       document.querySelectorAll('.mobile-link').forEach(link => {
         link.addEventListener('click', () => {
@@ -626,13 +573,10 @@
         });
       });
 
-      // Init progress bar
+      // Progress bar init
       updateProgressBar(0, CONFIG.PRESALE_CAP);
 
-      // Show network
-      document.getElementById('network-label').textContent = (CONFIG.NETWORK === "mainnet-beta") ? "Solana Mainnet" : "Solana Devnet";
-      
-      // Auto-connect if available
+      // Auto-connect ha a Phantom nyitva van
       if ('solana' in window && window.solana?.isPhantom) {
         window.solana.connect({ onlyIfTrusted: true })
           .then(r => {
