@@ -344,7 +344,7 @@
       NETWORK: "devnet", // Default devnet. SET TO "mainnet-beta" FOR MAINNET
       PRESALE_CONTRACT: "H1xcQBvXT2hrFKDEoYxyvR6Zpyk1SZRVhwVfYgdpNuFb",
       TOKEN_MINT: "5vxfqnLVETP6xqZAjebckEbRCkwyzHFoDUoBjXhxEqA3",
-      ADMIN_WALLET: "4iubzdpP14Mo32iRseD7nZEhP1RVLWjjwbsh228uBk3z",
+      ADMIN_WALLET: "4iubzdpP14Mo32iRseD7nZEhP1RVLWjjwbsh228uBk3z", // A te Devnet tárcád
       EXCHANGE_RATE: 1000000,
       MIN_SOL: 0.01,
       MAX_SOL: 10,
@@ -383,7 +383,7 @@
     async function getUserBalance(publicKey) {
       try {
         const connection = new window.solanaWeb3.Connection(CONFIG.RPC_URL);
-        const balance = await connection.getBalance(publicKey);
+        const balance = await connection.getBalance(new window.solanaWeb3.PublicKey(publicKey));
         return balance / window.solanaWeb3.LAMPORTS_PER_SOL;
       } catch (error) {
         return 0;
@@ -424,12 +424,11 @@
         if ('solana' in window && window.solana?.isPhantom) {
           const resp = await window.solana.connect();
           userPublicKey = resp.publicKey.toString();
-          userBalance = await getUserBalance(resp.publicKey);
+          userBalance = await getUserBalance(userPublicKey);
           updateWalletUI(true, userPublicKey);
           document.getElementById('sol-balance').textContent = userBalance.toFixed(2);
           showNotification(`✓ Connected: ${userPublicKey.slice(0, 8)}...`, 'success');
         } else {
-          // Phantom not installed
           const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
           if (isMobile) {
             window.location.href = "https://phantom.app/ul/browse/" + encodeURIComponent(window.location.href);
@@ -443,24 +442,72 @@
       }
     }
 
-    // ============= Blockchain Transaction Flow ===============
+    // ============= Valós Blockchain Tranzakció (SOL küldés az Adminnak) ===============
     async function presaleBuy(solAmount) {
-      // TODO: Replace with actual Anchor/IDL-based transaction for production!
       const buyBtn = document.getElementById('buy-btn');
       buyBtn.setAttribute('aria-busy', 'true');
       buyBtn.disabled = true;
       buyBtn.innerText = 'Processing...';
       buyBtn.classList.add('animate-pulse');
+
       try {
-        showNotification('Transaction initiated...', 'info');
-        // Add here: Real anchor IDL invoke for buyTokens
-        await new Promise(r => setTimeout(r, 2000)); // Simulate network
-        // For demo/DEVNET: Random progress
-        const sold = Math.floor(Math.random() * CONFIG.PRESALE_CAP * 0.85) + Math.floor(solAmount * CONFIG.EXCHANGE_RATE);
-        updateProgressBar(sold, CONFIG.PRESALE_CAP);
-        showNotification('✓ Transaction successful!', 'success');
+        if (!window.solana || !window.solana.isPhantom) {
+          throw new Error("Phantom wallet nem található!");
+        }
+
+        showNotification('Várakozás a tranzakció jóváhagyására...', 'info');
+
+        const connection = new window.solanaWeb3.Connection(CONFIG.RPC_URL, 'confirmed');
+        const lamports = solAmount * window.solanaWeb3.LAMPORTS_PER_SOL;
+        
+        // Címek beállítása
+        const adminWalletPubKey = new window.solanaWeb3.PublicKey(CONFIG.ADMIN_WALLET);
+        const userWalletPubKey = new window.solanaWeb3.PublicKey(userPublicKey);
+
+        // 1. Tranzakció létrehozása (SOL küldése)
+        const transaction = new window.solanaWeb3.Transaction().add(
+          window.solanaWeb3.SystemProgram.transfer({
+            fromPubkey: userWalletPubKey,
+            toPubkey: adminWalletPubKey,
+            lamports: lamports,
+          })
+        );
+
+        // 2. Blockhash lekérése
+        const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash();
+        transaction.recentBlockhash = blockhash;
+        transaction.feePayer = userWalletPubKey;
+
+        // 3. Tranzakció aláíratása a Phantommal
+        const signedTransaction = await window.solana.signTransaction(transaction);
+
+        // 4. Tranzakció beküldése a hálózatba
+        const signature = await connection.sendRawTransaction(signedTransaction.serialize());
+
+        showNotification('Tranzakció elküldve! Megerősítésre vár...', 'info');
+
+        // 5. Megerősítés megvárása
+        await connection.confirmTransaction({
+            blockhash: blockhash,
+            lastValidBlockHeight: lastValidBlockHeight,
+            signature: signature
+        }, 'confirmed');
+
+        // Sikeres tranzakció utáni UI frissítés
+        const currentSoldStr = document.getElementById('sold-amount').innerText.replace(/,/g, '');
+        const currentSold = parseInt(currentSoldStr) || 0;
+        const newTokens = solAmount * CONFIG.EXCHANGE_RATE;
+        updateProgressBar(currentSold + newTokens, CONFIG.PRESALE_CAP);
+
+        showNotification(`✓ Sikeres tranzakció! Azonosító: ${signature.slice(0,8)}...`, 'success');
+
+        // Egyenleg frissítése a vásárlás után
+        userBalance = await getUserBalance(userWalletPubKey);
+        document.getElementById('sol-balance').textContent = userBalance.toFixed(2);
+
       } catch (error) {
-        showNotification('Transaction failed', 'error');
+        console.error("Tranzakciós hiba:", error);
+        showNotification(`Hiba történt: ${error.message || 'Tranzakció megszakítva'}`, 'error');
       } finally {
         buyBtn.setAttribute('aria-busy', 'false');
         buyBtn.disabled = false;
@@ -474,7 +521,7 @@
       const modal = document.getElementById('presale-modal');
       document.getElementById('open-presale-btn').onclick = () => {
         modal.classList.remove('hidden');
-        setTimeout(() => modal.focus(), 100); // for accessibility
+        setTimeout(() => modal.focus(), 100); 
       };
       document.getElementById('close-presale').onclick = () => modal.classList.add('hidden');
       modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.add('hidden'); });
@@ -544,13 +591,14 @@
 
       // Show network
       document.getElementById('network-label').textContent = (CONFIG.NETWORK === "mainnet-beta") ? "Solana Mainnet" : "Solana Devnet";
+      
       // Auto-connect if available
       if ('solana' in window && window.solana?.isPhantom) {
         window.solana.connect({ onlyIfTrusted: true })
           .then(r => {
             userPublicKey = r.publicKey.toString();
             updateWalletUI(true, userPublicKey);
-            getUserBalance(r.publicKey).then(bal =>
+            getUserBalance(userPublicKey).then(bal =>
               document.getElementById('sol-balance').textContent = bal.toFixed(2));
           }).catch(()=>{});
       }
