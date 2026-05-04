@@ -16,7 +16,7 @@
   
   <!-- Solana Web3 JS -->
   <script src="https://unpkg.com/@solana/web3.js@1.88.0/lib/index.iife.min.js"></script>
-  <!-- Solana SPL Token JS (ÚJ: a token számlák kezeléséhez) -->
+  <!-- Solana SPL Token JS -->
   <script src="https://unpkg.com/@solana/spl-token@0.3.8/lib/index.iife.min.js"></script>
 
   <script>
@@ -153,7 +153,6 @@
         <h2 class="text-4xl font-display font-bold text-white">Tokenomics & Distribution</h2>
         <p class="mt-2 text-gray-400">Transparent allocation for sustainable growth</p>
       </div>
-      <!-- Tokenomics Content as before -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div class="relative w-full h-80 flex items-center justify-center">
           <div class="w-64 h-64 rounded-full border-8 border-emerald-500/30 flex items-center justify-center relative">
@@ -257,8 +256,8 @@
     // ===================== CONFIG =====================
     const CONFIG = {
       NETWORK: "devnet",
-      // IDE MÁSOLD BE AZ OKOSSZERZŐDÉSED ÚJ PROGRAM ID-JÉT A PLAYGROUNDBÓL:
-      PRESALE_CONTRACT: "11111111111111111111111111111111", 
+      // ÚJ PROGRAM ID BEÁLLÍTVA:
+      PRESALE_CONTRACT: "ADU7hHFKmQcUs9tFNxzjDdUvkPvuhimkcPXKVFS5tXG5", 
       TOKEN_MINT: "BPk4cKiNm3DovoHGbfTbsGabAVxsbyHHe3tLFq8rkaib",
       ADMIN_WALLET: "4iubzdpP14Mo32iRseD7nZEhP1RVLWjjwbsh228uBk3z",
       EXCHANGE_RATE: 1000000,
@@ -373,13 +372,22 @@
         const userWalletPubKey = new window.solanaWeb3.PublicKey(userPublicKey);
         const mintPubKey = new window.solanaWeb3.PublicKey(CONFIG.TOKEN_MINT);
 
-        // 2. Token Számlák (ATA) kikeresése
+        // ÚJ: Vault PDA és Vault ATA generálása (A client.ts logikája alapján)
+        const [vaultPda] = window.solanaWeb3.PublicKey.findProgramAddressSync(
+            [new TextEncoder().encode("presale")],
+            programId
+        );
+        const vaultTokenAccount = window.solanaWeb3.PublicKey.findProgramAddressSync(
+            [vaultPda.toBuffer(), TOKEN_PROGRAM_ID.toBuffer(), mintPubKey.toBuffer()],
+            ASSOCIATED_TOKEN_PROGRAM_ID
+        )[0];
+
+        // 2. Vásárló Token Számlájának (ATA) kikeresése
         const getATA = (wallet) => window.solanaWeb3.PublicKey.findProgramAddressSync(
             [wallet.toBuffer(), TOKEN_PROGRAM_ID.toBuffer(), mintPubKey.toBuffer()],
             ASSOCIATED_TOKEN_PROGRAM_ID
         )[0];
 
-        const adminTokenAccount = getATA(adminWalletPubKey);
         const buyerTokenAccount = getATA(userWalletPubKey);
 
         const transaction = new window.solanaWeb3.Transaction();
@@ -412,13 +420,14 @@
         instructionData.set(discriminator);
         instructionData.set(amountBytes, discriminator.length);
 
-        // 5. Accountok összeállítása (Pontosan ahogy a lib.rs-ben van)
-        // FIGYELEM: Az Admin isSigner értéke jelenleg 'false', hogy a frontend lefusson. 
-        // Az okosszerződésedben módosítanod kell az admint, hogy ne kérjen Signer jogot!
+        // 5. Accountok összeállítása
+        // Figyelem: Itt most a Vault PDA-t és a Vault ATA-t fűztük be az okosszerződésed alapján!
+        // Ha a rust (lib.rs) fájlodban máshogy van a sorrend, módosítsd ezt a tömböt.
         const keys = [
             { pubkey: userWalletPubKey, isSigner: true, isWritable: true },       // buyer
-            { pubkey: adminWalletPubKey, isSigner: false, isWritable: true },      // admin (MÓDOSÍTVA FALSE-ra a biztonságért!)
-            { pubkey: adminTokenAccount, isSigner: false, isWritable: true },      // admin_token_account
+            { pubkey: adminWalletPubKey, isSigner: false, isWritable: true },      // admin (SOL fogadó tárca)
+            { pubkey: vaultPda, isSigner: false, isWritable: false },              // vault_pda (Az új presale vault)
+            { pubkey: vaultTokenAccount, isSigner: false, isWritable: true },      // vault_token_account (admin_token_account helyett)
             { pubkey: buyerTokenAccount, isSigner: false, isWritable: true },      // buyer_token_account
             { pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false },      // token_program
             { pubkey: window.solanaWeb3.SystemProgram.programId, isSigner: false, isWritable: false } // system_program
